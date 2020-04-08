@@ -9,6 +9,7 @@ export const Card = ({ rank, suit }) => {
       }
     </style>
     <img
+      alt="${rank} of ${suit}"
       class="card"
       src="./images/cards/${getShortRank()}${getShortSuit()}.jpg"
     />`;
