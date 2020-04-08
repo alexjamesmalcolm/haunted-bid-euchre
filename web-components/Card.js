@@ -1,15 +1,15 @@
 import { html } from "../dependencies.js";
 
 export const Card = ({ rank, suit }) => {
+  const getShortRank = () => (rank == "10" ? "10" : rank.slice(0, 1));
+  const getShortSuit = () => suit.slice(0, 1);
   return html`<style>
-      .container {
-        border: 1px grey solid;
-        border-radius: 25%;
-        padding: 1rem;
+      .card {
+        width: 5rem;
       }
     </style>
-    <div class="container">
-      <p>Rank: ${rank}</p>
-      <p>Suit: ${suit}</p>
-    </div>`;
+    <img
+      class="card"
+      src="./images/cards/${getShortRank()}${getShortSuit()}.jpg"
+    />`;
 };

@@ -11,12 +11,16 @@ export const Player = ({
       .options {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        width: max-content;
+        width: 100%;
         gap: 1rem;
+      }
+      .option {
+        font-size: 1rem;
+        overflow-wrap: break-word;
       }
       .cards {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         width: max-content;
         gap: 1rem;
       }
@@ -33,10 +37,16 @@ export const Player = ({
     <div class="options">
       ${options.map(
         (option) =>
-          html`<button .onclick=${() => handleOptionSelection(option)}>
+          html`<button
+            .onclick=${() => handleOptionSelection(option)}
+            class="option"
+          >
             ${typeof option === "string"
               ? option
-              : `${option.rank} of ${option.suit}`}
+              : html`<be-card
+                  .suit=${option.suit}
+                  .rank=${option.rank}
+                ></be-card>`}
           </button>`
       )}
     </div>`;

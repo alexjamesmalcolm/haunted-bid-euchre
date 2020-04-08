@@ -17,7 +17,7 @@ export const App = () => {
   return html`<style>
       .players {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-columns: repeat(4, 1fr);
       }
     </style>
     <be-game-header .game=${game}></be-game-header>
