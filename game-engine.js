@@ -223,8 +223,10 @@ System.register("utils", ["shuffle"], function (exports_4, context_4) {
       exports_4(
         "getHigherBids",
         (getHigherBids = (bid) =>
-          bidHierarchy.filter((element) =>
-            isFirstBidGreaterThanSecond(element, bid)
+          bidHierarchy.filter(
+            (element) =>
+              element === "Pass" ||
+              (bid !== element && isFirstBidGreaterThanSecond(element, bid))
           ))
       );
       getSameColorSuit = (suit) => {
@@ -801,6 +803,17 @@ System.register("get_options_utils/get_for_bidding_phase", ["utils"], function (
         (getOptionsForBiddingPhase = (phase, currentPlayer) => {
           if (phase.bidPosition !== currentPlayer) {
             return [];
+          }
+          if (phase.bids.length === 0) {
+            return [
+              "Going Alone",
+              "Partner's Best Card",
+              "6",
+              "5",
+              "4",
+              "3",
+              "Pass",
+            ];
           }
           const highestBid = phase.bids
             .map((bid) => bid.choice)
