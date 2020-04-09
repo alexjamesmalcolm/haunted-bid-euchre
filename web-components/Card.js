@@ -11,6 +11,6 @@ export const Card = ({ rank, suit }) => {
     <img
       alt="${rank} of ${suit}"
       class="card"
-      src="./images/cards/${getShortRank()}${getShortSuit()}.jpg"
+      src="./images/cards/${getShortRank()}${getShortSuit()}.svg"
     />`;
 };
