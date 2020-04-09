@@ -1,6 +1,6 @@
-import { html } from "../dependencies.js";
+import { html, component } from "../dependencies.js";
 
-export const Player = ({
+const Player = ({
   options,
   name = "Name",
   hand,
@@ -50,3 +50,5 @@ export const Player = ({
       )}
     </div>`;
 };
+
+customElements.define("be-player", component(Player));

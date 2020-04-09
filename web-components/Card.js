@@ -1,6 +1,6 @@
-import { html } from "../dependencies.js";
+import { html, component } from "../dependencies.js";
 
-export const Card = ({ rank, suit }) => {
+const Card = ({ rank, suit }) => {
   const getShortRank = () => (rank == "10" ? "10" : rank.slice(0, 1));
   const getShortSuit = () => suit.slice(0, 1);
   return html`<style>
@@ -14,3 +14,5 @@ export const Card = ({ rank, suit }) => {
       src="./images/cards/${getShortRank()}${getShortSuit()}.svg"
     />`;
 };
+
+customElements.define("be-card", component(Card));

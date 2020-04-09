@@ -1,4 +1,4 @@
-import { html, useState } from "../dependencies.js";
+import { html, component, useState } from "../dependencies.js";
 import { startGame, getOptions, chooseOption } from "../game-engine.js";
 
 const initialGame = startGame([
@@ -8,7 +8,7 @@ const initialGame = startGame([
   { name: "Noodle", position: "4" },
 ]);
 
-export const App = () => {
+const App = () => {
   const [game, setGame] = useState(initialGame);
   const players = game.teams.reduce(
     (accumulator, team) => accumulator.concat(team.players),
@@ -34,3 +34,5 @@ export const App = () => {
       )}
     </div>`;
 };
+
+customElements.define("be-app", component(App));

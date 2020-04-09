@@ -1,7 +1,7 @@
-import { html } from "../dependencies.js";
+import { html, component } from "../dependencies.js";
 import { determineIfPhaseIsLegal } from "../game-engine.js";
 
-export const GameHeader = ({ game }) => {
+const GameHeader = ({ game }) => {
   const [isPhaseLegal, errorMessage] = determineIfPhaseIsLegal(game);
   return html`<style>
       .container {
@@ -28,3 +28,5 @@ export const GameHeader = ({ game }) => {
       </div>
     </div>`;
 };
+
+customElements.define("be-game-header", component(GameHeader));
