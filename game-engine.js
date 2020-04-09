@@ -891,11 +891,16 @@ System.register(
                 phase.trump
               );
               const doesPlayerHaveCardOfSameLeadingSuit = cardsOfSameSuitAsLead.some(
-                (card) => handOfCurrentPlayer.includes(card)
+                (card) =>
+                  handOfCurrentPlayer.some((cardInHand) =>
+                    utils_ts_6.isSameCard(cardInHand, card)
+                  )
               );
               if (doesPlayerHaveCardOfSameLeadingSuit) {
                 return handOfCurrentPlayer.filter((card) =>
-                  cardsOfSameSuitAsLead.includes(card)
+                  cardsOfSameSuitAsLead.some((cardOfSameSuitAsLead) =>
+                    utils_ts_6.isSameCard(cardOfSameSuitAsLead, card)
+                  )
                 );
               }
             }
