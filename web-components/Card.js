@@ -5,7 +5,7 @@ export const Card = ({ rank, suit }) => {
   const getShortSuit = () => suit.slice(0, 1);
   return html`<style>
       .card {
-        width: 5rem;
+        width: 5.5rem;
       }
     </style>
     <img

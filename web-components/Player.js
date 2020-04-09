@@ -1,5 +1,4 @@
-import { html, component, useState } from "../dependencies.js";
-import {} from "../game-engine.js";
+import { html } from "../dependencies.js";
 
 export const Player = ({
   options,
@@ -21,7 +20,7 @@ export const Player = ({
       .cards {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        width: max-content;
+        width: auto;
         gap: 1rem;
       }
     </style>
