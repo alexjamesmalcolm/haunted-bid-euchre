@@ -23,31 +23,45 @@ const Player = ({
         width: auto;
         gap: 1rem;
       }
+      .card-option {
+        padding: 3px;
+        margin: -3px;
+      }
     </style>
     <h2>${name}</h2>
     <h3>Hand</h3>
     <div class="cards">
-      ${hand.map(
-        (card) =>
-          html`<be-card .suit=${card.suit} .rank=${card.rank}></be-card>`
+      ${hand.map((card) =>
+        options.some(
+          (option) =>
+            typeof option !== "string" &&
+            option.rank === card.rank &&
+            option.suit === card.suit
+        )
+          ? html`<button
+              .onclick=${() => handleOptionSelection(card)}
+              class="card-option"
+            >
+              <be-card .suit=${card.suit} .rank=${card.rank}></be-card>
+            </button>`
+          : html`<be-card .suit=${card.suit} .rank=${card.rank}></be-card>`
       )}
     </div>
-    ${options.length > 0 ? html`<h3>Options</h3>` : null}
-    <div class="options">
-      ${options.map(
-        (option) =>
-          html`<button
-            .onclick=${() => handleOptionSelection(option)}
-            class="option"
-          >
-            ${typeof option === "string"
-              ? option
-              : html`<be-card
-                  .suit=${option.suit}
-                  .rank=${option.rank}
-                ></be-card>`}
-          </button>`
-      )}
+    ${
+      options.length > 0 && typeof options[0] === "string"
+        ? html`<h3>Options</h3>
+            <div class="options">
+              ${options.map(
+                (option) => html`<button
+                  .onclick=${() => handleOptionSelection(option)}
+                  class="option"
+                >
+                  ${option}
+                </button>`
+              )}
+            </div> `
+        : null
+    }
     </div>`;
 };
 

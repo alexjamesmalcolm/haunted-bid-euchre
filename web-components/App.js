@@ -21,6 +21,11 @@ const App = () => {
       }
     </style>
     <be-game-header .game=${game}></be-game-header>
+    ${game.currentTrick && game.currentTrick.length > 0
+      ? html`<be-current-trick
+          .currentTrick=${game.currentTrick}
+        ></be-current-trick>`
+      : null}
     <div class="players">
       ${players.map(
         (player) =>

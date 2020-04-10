@@ -12,7 +12,10 @@ const GameHeader = ({ game }) => {
     </style>
     <div class="container">
       <h1>Bid Euchre</h1>
-      <h2>Phase: ${game.name}</h2>
+      <div>
+        <h2>Phase: ${game.name}</h2>
+        <p>${game.trump ? `Trump: ${game.trump}` : null}</p>
+      </div>
       ${!isPhaseLegal
         ? html`<p>Here's what's wrong: ${errorMessage}</p>`
         : null}
