@@ -161,7 +161,7 @@ let System, __instantiateAsync, __instantiate;
               return "Low" === t ? n : n.reverse();
             }
             {
-              const n = a(e);
+              const n = a(t);
               if (e === t) {
                 return [
                   { rank: "Jack", suit: e },
