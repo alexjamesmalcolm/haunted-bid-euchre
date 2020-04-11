@@ -42,9 +42,17 @@ const Player = ({
               .onclick=${() => handleOptionSelection(card)}
               class="card-option"
             >
-              <be-card .suit=${card.suit} .rank=${card.rank}></be-card>
+              <be-card
+                .suit=${card.suit}
+                .rank=${card.rank}
+                .isFacingUp=${options.length > 0}
+              ></be-card>
             </button>`
-          : html`<be-card .suit=${card.suit} .rank=${card.rank}></be-card>`
+          : html`<be-card
+              .suit=${card.suit}
+              .rank=${card.rank}
+              .isFacingUp=${options.length > 0}
+            ></be-card>`
       )}
     </div>
     ${

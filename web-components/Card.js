@@ -1,6 +1,6 @@
 import { html, component } from "../dependencies.js";
 
-const Card = ({ rank, suit }) => {
+const Card = ({ rank, suit, isFacingUp = true }) => {
   const getShortRank = () => (rank == "10" ? "10" : rank.slice(0, 1));
   const getShortSuit = () => suit.slice(0, 1);
   return html`<style>
@@ -8,11 +8,17 @@ const Card = ({ rank, suit }) => {
         width: 5.5rem;
       }
     </style>
-    <img
-      alt="${rank} of ${suit}"
-      class="card"
-      src="./images/cards/${getShortRank()}${getShortSuit()}.svg"
-    />`;
+    ${isFacingUp
+      ? html`<img
+          alt="${rank} of ${suit}"
+          class="card"
+          src="./images/cards/${getShortRank()}${getShortSuit()}.svg"
+        />`
+      : html`<img
+          alt="Face down card"
+          class="card"
+          src="./images/cards/RED_BACK.svg"
+        />`}`;
 };
 
 customElements.define("be-card", component(Card));
