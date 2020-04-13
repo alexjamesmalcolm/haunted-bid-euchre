@@ -1,5 +1,6 @@
-import { html, component, useState } from "../dependencies.js";
+import { html, component, useState, useEffect } from "../dependencies.js";
 import { startGame, getOptions, chooseOption } from "../game-engine.js";
+import { checkIfApiIsUp } from "../api/index.js";
 
 const initialGame = startGame([
   { name: "Julia", position: "1" },
@@ -10,10 +11,20 @@ const initialGame = startGame([
 
 const App = () => {
   const [game, setGame] = useState(initialGame);
+  const [isServerUp, setIsServerUp] = useState(false);
   const players = game.teams.reduce(
     (accumulator, team) => accumulator.concat(team.players),
     []
   );
+  useEffect(() => {
+    checkIfApiIsUp().then(setIsServerUp);
+  }, []);
+  if (!isServerUp) {
+    return html`<be-loading
+      .color=${"#000"}
+      .message=${"Connecting to server..."}
+    />`;
+  }
   return html`<style>
       .players {
         display: grid;
