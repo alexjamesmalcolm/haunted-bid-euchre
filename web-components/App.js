@@ -11,6 +11,7 @@ const initialGame = startGame([
 
 const App = () => {
   const [game, setGame] = useState(initialGame);
+  console.log({ game });
   const [isServerUp, setIsServerUp] = useState(false);
   const players = game.teams.reduce(
     (accumulator, team) => accumulator.concat(team.players),
