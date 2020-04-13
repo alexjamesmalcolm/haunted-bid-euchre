@@ -1,5 +1,5 @@
 const endpoints = {
-  status: "http://api.euchre.bid/status",
+  status: "https://api.euchre.bid/status",
 };
 
 export const checkIfApiIsUp = () =>
