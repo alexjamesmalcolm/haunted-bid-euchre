@@ -36,8 +36,8 @@ let System, __instantiateAsync, __instantiate;
   function i(i) {
     for (const [r, s] of e.entries()) {
       const { f: e, exp: a } = s,
-        { execute: o, setters: c } = e(n(a), t(r, r === i));
-      delete s.f, (s.e = o), (s.s = c);
+        { execute: o, setters: u } = e(n(a), t(r, r === i));
+      delete s.f, (s.e = o), (s.s = u);
     }
   }
   async function r(t) {
@@ -108,7 +108,7 @@ let System, __instantiateAsync, __instantiate;
   }),
   System.register("utils", ["shuffle"], function (e, t) {
     "use strict";
-    var n, i, r, s, a, o, c;
+    var n, i, r, s, a, o, u;
     t && t.id;
     return {
       setters: [
@@ -261,8 +261,8 @@ let System, __instantiateAsync, __instantiate;
               [e[18], e[19], e[20], e[21], e[22], e[23]],
             ];
           }),
-          (c = (e) => ("1" === e ? 0 : "2" === e ? 1 : "3" === e ? 2 : 3)),
-          e("getHandSliceViaPosition", (e, t) => t[c(e)]),
+          (u = (e) => ("1" === e ? 0 : "2" === e ? 1 : "3" === e ? 2 : 3)),
+          e("getHandSliceViaPosition", (e, t) => t[u(e)]),
           e("getPlayerByPosition", (e, t) => {
             const n = t.teams[0].players
               .concat(t.teams[1].players)
@@ -390,7 +390,7 @@ let System, __instantiateAsync, __instantiate;
                     ? t.hand.filter((t) => !n.isSameCard(t, e))
                     : t.hand.concat([e]),
               }),
-              c = (e) => {
+              u = (e) => {
                 if (e.players.some((e) => e.position === t.partner)) {
                   return { ...e, players: [o(e.players[0]), o(e.players[1])] };
                 }
@@ -401,14 +401,14 @@ let System, __instantiateAsync, __instantiate;
                   name: "Trick-Taking",
                   playerSittingOut: t.partner,
                   dealer: t.dealer,
-                  teams: [c(t.teams[0]), c(t.teams[1])],
+                  teams: [u(t.teams[0]), u(t.teams[1])],
                   winningBid: t.winningBid,
                   trump: t.trump,
                   currentTrick: [],
                   finishedTricks: [],
                   cardPosition: n.getNextPosition(t.dealer),
                 }
-              : { ...t, teams: [c(t.teams[0]), c(t.teams[1])] };
+              : { ...t, teams: [u(t.teams[0]), u(t.teams[1])] };
           });
         },
       };
@@ -419,7 +419,7 @@ let System, __instantiateAsync, __instantiate;
     ["utils"],
     function (e, t) {
       "use strict";
-      var n, i, r, s, a, o, c;
+      var n, i, r, s, a, o, u;
       t && t.id;
       return {
         setters: [
@@ -453,21 +453,16 @@ let System, __instantiateAsync, __instantiate;
                 i = a(e);
               return t < n ? -1 * i : Math.max(t, i);
             }),
-            (c = (e, t, i) => {
+            (u = (e, t, i) => {
               const s = n.shuffleAndDealFourHands(),
                 a = (e) => ({
                   ...e,
                   hand: [...n.getHandSliceViaPosition(e.position, s)],
                 }),
-                c = [
-                  t.currentTrick[0],
-                  t.currentTrick[1],
-                  t.currentTrick[2],
-                  { card: e, owner: i },
-                ],
-                u = t.finishedTricks.concat([c]),
+                u = [...t.currentTrick, { card: e, owner: i }],
+                c = t.finishedTricks.concat([u]),
                 d = (e) => {
-                  const n = u.reduce((n, i) => {
+                  const n = c.reduce((n, i) => {
                       const s = r(i, t.trump);
                       return (
                         n + (e.players.some((e) => e.position === s) ? 1 : 0)
@@ -496,15 +491,15 @@ let System, __instantiateAsync, __instantiate;
                   currentTrick: s,
                   finishedTricks: a,
                   dealer: o,
-                  trump: u,
+                  trump: c,
                   winningBid: d,
-                  playerSittingOut: p,
-                  teams: g,
+                  playerSittingOut: g,
+                  teams: p,
                   cardPosition: l,
                 } = t,
-                k = 5 === a.length,
-                h = 3 === s.length;
-              if (k && h) return c(e, t, i);
+                h = 5 === a.length,
+                k = 3 === s.length || (!!g && 2 === s.length);
+              if (h && k) return u(e, t, i);
               const f = (t) => ({
                   name: t.name,
                   position: t.position,
@@ -514,30 +509,33 @@ let System, __instantiateAsync, __instantiate;
                   players: [f(e.players[0]), f(e.players[1])],
                   points: e.points,
                 });
-              if (h) {
-                const t = [s[0], s[1], s[2], { owner: i, card: e }];
+              if (k) {
+                const t = [...s, { owner: i, card: e }];
                 return {
                   name: "Trick-Taking",
-                  cardPosition: r(t, u),
+                  cardPosition: r(t, c),
                   currentTrick: [],
                   dealer: o,
                   finishedTricks: [...a, t],
-                  trump: u,
+                  trump: c,
                   winningBid: d,
-                  playerSittingOut: p,
-                  teams: [m(g[0]), m(g[1])],
+                  playerSittingOut: g,
+                  teams: [m(p[0]), m(p[1])],
                 };
               }
               return {
                 name: "Trick-Taking",
-                cardPosition: n.getNextPosition(l),
+                cardPosition:
+                  g && n.getNextPosition(l) === g
+                    ? n.getNextPosition(n.getNextPosition(l))
+                    : n.getNextPosition(l),
                 currentTrick: [...s, { owner: i, card: e }],
                 dealer: o,
                 finishedTricks: a,
-                trump: u,
+                trump: c,
                 winningBid: d,
-                playerSittingOut: p,
-                teams: [m(g[0]), m(g[1])],
+                playerSittingOut: g,
+                teams: [m(p[0]), m(p[1])],
               };
             });
         },
@@ -676,7 +674,7 @@ let System, __instantiateAsync, __instantiate;
     ],
     function (e, t) {
       "use strict";
-      var n, i, r, s, a, o, c, u, d, p, g, l, k, h, f;
+      var n, i, r, s, a, o, u, c, d, g, p, l, h, k, f;
       t && t.id;
       return {
         setters: [
@@ -699,21 +697,21 @@ let System, __instantiateAsync, __instantiate;
             o = e;
           },
           function (e) {
-            c = e;
+            u = e;
           },
           function (e) {
-            u = e;
+            c = e;
           },
           function (e) {
             d = e;
           },
         ],
         execute: function () {
-          (p = (e) => {
+          (g = (e) => {
             const t = e;
             return void 0 !== t.rank && void 0 !== t.suit;
           }),
-            (g = (e) =>
+            (p = (e) =>
               [
                 "Pass",
                 "3",
@@ -729,7 +727,16 @@ let System, __instantiateAsync, __instantiate;
               )),
             e(
               "determineIfPhaseIsLegal",
-              (k = (e) => {
+              (h = (e) => {
+                if (
+                  "Trick-Taking" === e.name &&
+                  e.playerSittingOut &&
+                  e.playerSittingOut === e.cardPosition
+                )
+                  return [
+                    !1,
+                    "The player sitting out shouldn't be able to play",
+                  ];
                 if (2 !== e.teams.length)
                   return [!1, "Team lengths were not two"];
                 const t = e.teams[0].players.concat(e.teams[1].players);
@@ -754,7 +761,10 @@ let System, __instantiateAsync, __instantiate;
                         .length === e.currentTrick.length)
                   )
                 )
-                  return [!1, "One of the "];
+                  return [
+                    !1,
+                    "One of the finished tricks has more than one card from the same player.",
+                  ];
                 const i =
                     "Trick-Taking" === e.name
                       ? e.finishedTricks
@@ -797,35 +807,35 @@ let System, __instantiateAsync, __instantiate;
             ),
             e(
               "getOptions",
-              (h = (e, t) =>
-                k(e)[0]
+              (k = (e, t) =>
+                h(e)[0]
                   ? "Bidding" === e.name
                     ? a.getOptionsForBiddingPhase(e, t)
                     : "Picking Trump" === e.name
                     ? o.getOptionsForTrumpPickingPhase(e, t)
                     : "Trick-Taking" === e.name
-                    ? c.getOptionsForTrickTakingPhase(e, t)
+                    ? u.getOptionsForTrickTakingPhase(e, t)
                     : "Picking Partner's Best Card" === e.name
-                    ? u.getOptionsForPartnersBestCardPickingPhase(e, t)
+                    ? c.getOptionsForPartnersBestCardPickingPhase(e, t)
                     : []
                   : [])
             ),
-            e("isLegalOption", (f = (e, t, n) => h(t, n).includes(e))),
+            e("isLegalOption", (f = (e, t, n) => k(t, n).includes(e))),
             e("chooseOption", (e, t, a) => {
-              if (!f(e, t, a) || !k(t)) return t;
+              if (!f(e, t, a) || !h(t)) return t;
               const o = (() =>
-                "Bidding" === t.name && g(e)
+                "Bidding" === t.name && p(e)
                   ? n.chooseOptionForBiddingPhase(e, t, a)
                   : "Picking Trump" === t.name && l(e)
                   ? i.chooseOptionForPickingTrumpPhase(e, t)
-                  : "Picking Partner's Best Card" === t.name && p(e)
+                  : "Picking Partner's Best Card" === t.name && g(e)
                   ? r.chooseOptionForPickingPartnersBestCardPhase(e, t, a)
-                  : "Trick-Taking" === t.name && p(e)
+                  : "Trick-Taking" === t.name && g(e)
                   ? s.chooseOptionForTrickTakingPhase(e, t, a)
                   : t)();
               if ("Game Over" === o.name) return o;
-              const [c, u] = k(o);
-              return c ? o : (console.warn(u), t);
+              const [u, c] = h(o);
+              return u ? o : (console.warn(c), t);
             }),
             e("startGame", (e) => {
               const t = d.randomPlayerPosition(),
@@ -845,7 +855,7 @@ let System, __instantiateAsync, __instantiate;
                     { points: 0, players: [r("2"), r("4")] },
                   ],
                 },
-                a = k(s);
+                a = h(s);
               return a[0] ? s : a;
             });
         },
