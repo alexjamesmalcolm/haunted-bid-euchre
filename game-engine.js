@@ -1,15 +1,15 @@
 let System, __instantiateAsync, __instantiate;
 (() => {
   const e = new Map();
-  function t(t, n) {
+  function t(t, i) {
     return {
       id: t,
-      import: (n) =>
-        (async function (t, n) {
-          let i = t.replace(/\.\w+$/i, "");
-          if (i.includes("./")) {
-            const [e, ...t] = i.split("/").reverse(),
-              [, ...r] = n.split("/").reverse(),
+      import: (i) =>
+        (async function (t, i) {
+          let n = t.replace(/\.\w+$/i, "");
+          if (n.includes("./")) {
+            const [e, ...t] = n.split("/").reverse(),
+              [, ...r] = i.split("/").reverse(),
               s = [e];
             let a,
               o = 0;
@@ -19,60 +19,60 @@ let System, __instantiateAsync, __instantiate;
                 if ("." === a) break;
                 s.push(a);
               }
-            o < r.length && s.push(...r.slice(o)), (i = s.reverse().join("/"));
+            o < r.length && s.push(...r.slice(o)), (n = s.reverse().join("/"));
           }
-          return e.has(i) ? r(i) : import(t);
-        })(n, t),
-      meta: { url: t, main: n },
+          return e.has(n) ? r(n) : import(t);
+        })(i, t),
+      meta: { url: t, main: i },
     };
   }
-  function n(e) {
-    return (t, n) => {
-      n = "string" == typeof t ? { [t]: n } : t;
-      for (const [t, i] of Object.entries(n))
-        Object.defineProperty(e, t, { value: i, writable: !0, enumerable: !0 });
+  function i(e) {
+    return (t, i) => {
+      i = "string" == typeof t ? { [t]: i } : t;
+      for (const [t, n] of Object.entries(i))
+        Object.defineProperty(e, t, { value: n, writable: !0, enumerable: !0 });
     };
   }
-  function i(i) {
+  function n(n) {
     for (const [r, s] of e.entries()) {
       const { f: e, exp: a } = s,
-        { execute: o, setters: u } = e(n(a), t(r, r === i));
+        { execute: o, setters: u } = e(i(a), t(r, r === n));
       delete s.f, (s.e = o), (s.s = u);
     }
   }
   async function r(t) {
     if (!e.has(t)) return;
-    const n = e.get(t);
-    if (n.s) {
-      const { d: e, e: t, s: i } = n;
-      delete n.s, delete n.e;
-      for (let t = 0; t < i.length; t++) i[t](await r(e[t]));
+    const i = e.get(t);
+    if (i.s) {
+      const { d: e, e: t, s: n } = i;
+      delete i.s, delete i.e;
+      for (let t = 0; t < n.length; t++) n[t](await r(e[t]));
       const s = t();
       s && (await s);
     }
-    return n.exp;
+    return i.exp;
   }
   (System = {
-    register(t, n, i) {
-      e.set(t, { d: n, f: i, exp: {} });
+    register(t, i, n) {
+      e.set(t, { d: i, f: n, exp: {} });
     },
   }),
     (__instantiateAsync = async (e) => (
-      (System = __instantiateAsync = __instantiate = void 0), i(e), r(e)
+      (System = __instantiateAsync = __instantiate = void 0), n(e), r(e)
     )),
     (__instantiate = (t) => (
       (System = __instantiateAsync = __instantiate = void 0),
-      i(t),
-      (function t(n) {
-        if (!e.has(n)) return;
-        const i = e.get(n);
-        if (i.s) {
-          const { d: e, e: n, s: r } = i;
-          delete i.s, delete i.e;
-          for (let n = 0; n < r.length; n++) r[n](t(e[n]));
-          n();
+      n(t),
+      (function t(i) {
+        if (!e.has(i)) return;
+        const n = e.get(i);
+        if (n.s) {
+          const { d: e, e: i, s: r } = n;
+          delete n.s, delete n.e;
+          for (let i = 0; i < r.length; i++) r[i](t(e[i]));
+          i();
         }
-        return i.exp;
+        return n.exp;
       })(t)
     ));
 })(),
@@ -88,36 +88,36 @@ let System, __instantiateAsync, __instantiate;
   }),
   System.register("shuffle", [], function (e, t) {
     "use strict";
-    var n;
+    var i;
     t && t.id;
     return {
       setters: [],
       execute: function () {
-        (n = (e) => {
+        (i = (e) => {
           for (let t = e.length - 1; t > 0; t--) {
-            let n = Math.floor(Math.random() * (t + 1));
-            [e[t], e[n]] = [e[n], e[t]];
+            let i = Math.floor(Math.random() * (t + 1));
+            [e[t], e[i]] = [e[i], e[t]];
           }
         }),
           e("default", (e) => {
             const t = e.map((e) => e);
-            return n(t), t;
+            return i(t), t;
           });
       },
     };
   }),
   System.register("utils", ["shuffle"], function (e, t) {
     "use strict";
-    var n, i, r, s, a, o, u;
+    var i, n, r, s, a, o, u;
     t && t.id;
     return {
       setters: [
         function (e) {
-          n = e;
+          i = e;
         },
       ],
       execute: function () {
-        (i = [
+        (n = [
           "Going Alone",
           "Partner's Best Card",
           "6",
@@ -128,7 +128,7 @@ let System, __instantiateAsync, __instantiate;
         ]),
           e(
             "getHigherBid",
-            (r = (e, t) => i.filter((n) => n === e || n === t)[0])
+            (r = (e, t) => n.filter((i) => i === e || i === t)[0])
           ),
           e("getNextPosition", (e) =>
             "1" === e ? "2" : "2" === e ? "3" : "3" === e ? "4" : "1"
@@ -138,7 +138,7 @@ let System, __instantiateAsync, __instantiate;
           ),
           (s = (e, t) => r(e, t) === e),
           e("getHigherBids", (e) =>
-            i.filter((t) => "Pass" === t || (e !== t && s(t, e)))
+            n.filter((t) => "Pass" === t || (e !== t && s(t, e)))
           ),
           (a = (e) =>
             "Clubs" === e
@@ -150,7 +150,7 @@ let System, __instantiateAsync, __instantiate;
               : "Diamonds"),
           e("getCardsOfSuitWhenTrumpOrderedByHierarchyDesc", (e, t) => {
             if ("Low" === t || "High" === t) {
-              const n = [
+              const i = [
                 { rank: "9", suit: e },
                 { rank: "10", suit: e },
                 { rank: "Jack", suit: e },
@@ -158,14 +158,14 @@ let System, __instantiateAsync, __instantiate;
                 { rank: "King", suit: e },
                 { rank: "Ace", suit: e },
               ];
-              return "Low" === t ? n : n.reverse();
+              return "Low" === t ? i : i.reverse();
             }
             {
-              const n = a(t);
+              const i = a(t);
               if (e === t) {
                 return [
                   { rank: "Jack", suit: e },
-                  { rank: "Jack", suit: n },
+                  { rank: "Jack", suit: i },
                   { rank: "Ace", suit: e },
                   { rank: "King", suit: e },
                   { rank: "Queen", suit: e },
@@ -173,7 +173,7 @@ let System, __instantiateAsync, __instantiate;
                   { rank: "9", suit: e },
                 ];
               }
-              if (n === e) {
+              if (i === e) {
                 return [
                   { rank: "Ace", suit: e },
                   { rank: "King", suit: e },
@@ -228,7 +228,7 @@ let System, __instantiateAsync, __instantiate;
             { rank: "Ace", suit: "Spades" },
           ],
           e("shuffleAndDealFourHands", () => {
-            const e = n.default([
+            const e = i.default([
               { rank: "9", suit: "Clubs" },
               { rank: "10", suit: "Clubs" },
               { rank: "Jack", suit: "Clubs" },
@@ -264,10 +264,10 @@ let System, __instantiateAsync, __instantiate;
           (u = (e) => ("1" === e ? 0 : "2" === e ? 1 : "3" === e ? 2 : 3)),
           e("getHandSliceViaPosition", (e, t) => t[u(e)]),
           e("getPlayerByPosition", (e, t) => {
-            const n = t.teams[0].players
+            const i = t.teams[0].players
               .concat(t.teams[1].players)
               .find((t) => t.position === e);
-            if (n) return n;
+            if (i) return i;
             throw `Could not find player of position ${e}`;
           });
       },
@@ -278,24 +278,24 @@ let System, __instantiateAsync, __instantiate;
     ["utils"],
     function (e, t) {
       "use strict";
-      var n, i;
+      var i, n;
       t && t.id;
       return {
         setters: [
           function (e) {
-            n = e;
+            i = e;
           },
         ],
         execute: function () {
-          (i = (e) =>
+          (n = (e) =>
             e.reduce((e, t) => {
-              return n.getHigherBid(e.choice, t.choice) === e.choice ? e : t;
+              return i.getHigherBid(e.choice, t.choice) === e.choice ? e : t;
             })),
             e("chooseOptionForBiddingPhase", (e, t, r) => {
               const s = { choice: e, playerPosition: r },
                 a = t.bids.concat([s]);
               if (r === t.dealer) {
-                const e = i(a);
+                const e = n(a);
                 return {
                   name: "Picking Trump",
                   dealer: t.dealer,
@@ -305,7 +305,7 @@ let System, __instantiateAsync, __instantiate;
               }
               return {
                 name: "Bidding",
-                bidPosition: n.getNextPosition(t.bidPosition),
+                bidPosition: i.getNextPosition(t.bidPosition),
                 bids: a,
                 dealer: t.dealer,
                 teams: t.teams,
@@ -320,23 +320,23 @@ let System, __instantiateAsync, __instantiate;
     ["utils"],
     function (e, t) {
       "use strict";
-      var n;
+      var i;
       t && t.id;
       return {
         setters: [
           function (e) {
-            n = e;
+            i = e;
           },
         ],
         execute: function () {
           e("chooseOptionForPickingTrumpPhase", (e, t) => {
-            const i = t.dealer,
-              r = n.getPositionOfPartner(t.winningBid.playerPosition),
+            const n = t.dealer,
+              r = i.getPositionOfPartner(t.winningBid.playerPosition),
               s = t.teams;
             if ("Partner's Best Card" === t.winningBid.choice) {
               return {
                 name: "Picking Partner's Best Card",
-                dealer: i,
+                dealer: n,
                 trump: e,
                 partner: r,
                 teams: s,
@@ -346,10 +346,10 @@ let System, __instantiateAsync, __instantiate;
             {
               const a = {
                 name: "Trick-Taking",
-                dealer: i,
+                dealer: n,
                 trump: e,
                 winningBid: t.winningBid,
-                cardPosition: n.getNextPosition(i),
+                cardPosition: i.getNextPosition(n),
                 teams: s,
                 currentTrick: [],
                 finishedTricks: [],
@@ -370,24 +370,24 @@ let System, __instantiateAsync, __instantiate;
     ["utils"],
     function (e, t) {
       "use strict";
-      var n;
+      var i;
       t && t.id;
       return {
         setters: [
           function (e) {
-            n = e;
+            i = e;
           },
         ],
         execute: function () {
-          e("chooseOptionForPickingPartnersBestCardPhase", (e, t, i) => {
+          e("chooseOptionForPickingPartnersBestCardPhase", (e, t, n) => {
             const r = t.partner,
-              s = n.getPositionOfPartner(r),
-              a = 5 === n.getPlayerByPosition(s, t).hand.length,
+              s = i.getPositionOfPartner(r),
+              a = 5 === i.getPlayerByPosition(s, t).hand.length,
               o = (t) => ({
                 ...t,
                 hand:
-                  t.position === i
-                    ? t.hand.filter((t) => !n.isSameCard(t, e))
+                  t.position === n
+                    ? t.hand.filter((t) => !i.isSameCard(t, e))
                     : t.hand.concat([e]),
               }),
               u = (e) => {
@@ -406,7 +406,7 @@ let System, __instantiateAsync, __instantiate;
                   trump: t.trump,
                   currentTrick: [],
                   finishedTricks: [],
-                  cardPosition: n.getNextPosition(t.dealer),
+                  cardPosition: i.getNextPosition(t.dealer),
                 }
               : { ...t, teams: [u(t.teams[0]), u(t.teams[1])] };
           });
@@ -419,27 +419,27 @@ let System, __instantiateAsync, __instantiate;
     ["utils"],
     function (e, t) {
       "use strict";
-      var n, i, r, s, a, o, u;
+      var i, n, r, s, a, o, u;
       t && t.id;
       return {
         setters: [
           function (e) {
-            n = e;
+            i = e;
           },
         ],
         execute: function () {
-          (i = (e, t, i) => {
-            return n
+          (n = (e, t, n) => {
+            return i
               .getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(e, t)
-              .filter((e) => i.some((t) => n.isSameCard(t, e)))[0];
+              .filter((e) => n.some((t) => i.isSameCard(t, e)))[0];
           }),
             (r = (e, t) => {
-              const r = i(
+              const r = n(
                 e[0].card.suit,
                 t,
                 e.map((e) => e.card)
               );
-              return e.filter((e) => n.isSameCard(e.card, r))[0].owner;
+              return e.filter((e) => i.isSameCard(e.card, r))[0].owner;
             }),
             (s = (e) => ("3" === e ? 3 : "4" === e ? 4 : "5" === e ? 5 : 6)),
             (a = (e) =>
@@ -449,68 +449,68 @@ let System, __instantiateAsync, __instantiate;
                 ? 24
                 : s(e)),
             (o = (e, t) => {
-              const n = s(e),
-                i = a(e);
-              return t < n ? -1 * i : Math.max(t, i);
+              const i = s(e),
+                n = a(e);
+              return t < i ? -1 * n : Math.max(t, n);
             }),
-            (u = (e, t, i) => {
-              const s = n.shuffleAndDealFourHands(),
+            (u = (e, t, n) => {
+              const s = i.shuffleAndDealFourHands(),
                 a = (e) => ({
                   ...e,
-                  hand: [...n.getHandSliceViaPosition(e.position, s)],
+                  hand: [...i.getHandSliceViaPosition(e.position, s)],
                 }),
-                u = [...t.currentTrick, { card: e, owner: i }],
+                u = [...t.currentTrick, { card: e, owner: n }],
                 c = t.finishedTricks.concat([u]),
                 d = (e) => {
-                  const n = c.reduce((n, i) => {
-                      const s = r(i, t.trump);
+                  const i = c.reduce((i, n) => {
+                      const s = r(n, t.trump);
                       return (
-                        n + (e.players.some((e) => e.position === s) ? 1 : 0)
+                        i + (e.players.some((e) => e.position === s) ? 1 : 0)
                       );
                     }, 0),
-                    i = e.players.some(
+                    n = e.players.some(
                       (e) => e.position === t.winningBid.playerPosition
                     )
-                      ? o(t.winningBid.choice, n)
-                      : n;
+                      ? o(t.winningBid.choice, i)
+                      : i;
                   return {
-                    points: e.points + i,
+                    points: e.points + n,
                     players: [a(e.players[0]), a(e.players[1])],
                   };
                 };
               return {
                 name: "Bidding",
-                bidPosition: "1",
+                bidPosition: i.getNextPosition(i.getNextPosition(t.dealer)),
                 bids: [],
-                dealer: "1",
+                dealer: i.getNextPosition(t.dealer),
                 teams: [d(t.teams[0]), d(t.teams[1])],
               };
             }),
-            e("chooseOptionForTrickTakingPhase", (e, t, i) => {
+            e("chooseOptionForTrickTakingPhase", (e, t, n) => {
               const {
                   currentTrick: s,
                   finishedTricks: a,
                   dealer: o,
                   trump: c,
                   winningBid: d,
-                  playerSittingOut: g,
-                  teams: p,
+                  playerSittingOut: p,
+                  teams: g,
                   cardPosition: l,
                 } = t,
                 h = 5 === a.length,
-                k = 3 === s.length || (!!g && 2 === s.length);
-              if (h && k) return u(e, t, i);
-              const f = (t) => ({
+                k = 3 === s.length || (!!p && 2 === s.length);
+              if (h && k) return u(e, t, n);
+              const m = (t) => ({
                   name: t.name,
                   position: t.position,
-                  hand: t.hand.filter((t) => !n.isSameCard(e, t)),
+                  hand: t.hand.filter((t) => !i.isSameCard(e, t)),
                 }),
-                m = (e) => ({
-                  players: [f(e.players[0]), f(e.players[1])],
+                f = (e) => ({
+                  players: [m(e.players[0]), m(e.players[1])],
                   points: e.points,
                 });
               if (k) {
-                const t = [...s, { owner: i, card: e }];
+                const t = [...s, { owner: n, card: e }];
                 return {
                   name: "Trick-Taking",
                   cardPosition: r(t, c),
@@ -519,23 +519,23 @@ let System, __instantiateAsync, __instantiate;
                   finishedTricks: [...a, t],
                   trump: c,
                   winningBid: d,
-                  playerSittingOut: g,
-                  teams: [m(p[0]), m(p[1])],
+                  playerSittingOut: p,
+                  teams: [f(g[0]), f(g[1])],
                 };
               }
               return {
                 name: "Trick-Taking",
                 cardPosition:
-                  g && n.getNextPosition(l) === g
-                    ? n.getNextPosition(n.getNextPosition(l))
-                    : n.getNextPosition(l),
-                currentTrick: [...s, { owner: i, card: e }],
+                  p && i.getNextPosition(l) === p
+                    ? i.getNextPosition(i.getNextPosition(l))
+                    : i.getNextPosition(l),
+                currentTrick: [...s, { owner: n, card: e }],
                 dealer: o,
                 finishedTricks: a,
                 trump: c,
                 winningBid: d,
-                playerSittingOut: g,
-                teams: [m(p[0]), m(p[1])],
+                playerSittingOut: p,
+                teams: [f(g[0]), f(g[1])],
               };
             });
         },
@@ -547,12 +547,12 @@ let System, __instantiateAsync, __instantiate;
     ["utils"],
     function (e, t) {
       "use strict";
-      var n;
+      var i;
       t && t.id;
       return {
         setters: [
           function (e) {
-            n = e;
+            i = e;
           },
         ],
         execute: function () {
@@ -568,13 +568,13 @@ let System, __instantiateAsync, __instantiate;
                 "3",
                 "Pass",
               ];
-            const i = e.bids
+            const n = e.bids
                 .map((e) => e.choice)
-                .reduce((e, t) => n.getHigherBid(e, t)),
+                .reduce((e, t) => i.getHigherBid(e, t)),
               r = t === e.dealer,
               s = e.bids.every((e) => "Pass" === e.choice),
               a = r && s,
-              o = n.getHigherBids(i);
+              o = i.getHigherBids(n);
             return a ? o.filter((e) => "Pass" !== e) : o;
           });
         },
@@ -606,28 +606,38 @@ let System, __instantiateAsync, __instantiate;
     ["utils"],
     function (e, t) {
       "use strict";
-      var n;
+      var i;
       t && t.id;
       return {
         setters: [
           function (e) {
-            n = e;
+            i = e;
           },
         ],
         execute: function () {
           e("getOptionsForTrickTakingPhase", (e, t) => {
             if (e.cardPosition !== t) return [];
-            const i = e.teams[0].players
+            const n = e.teams[0].players
                 .concat(e.teams[1].players)
                 .find((e) => e.position === t),
-              r = i ? i.hand : [];
+              r = n ? n.hand : [];
             if (e.currentTrick.length > 0) {
-              const t = n.getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(
-                e.currentTrick[0].card.suit,
-                e.trump
-              );
-              if (t.some((e) => r.some((t) => n.isSameCard(t, e))))
-                return r.filter((e) => t.some((t) => n.isSameCard(t, e)));
+              const t = e.currentTrick[0].card,
+                n = i.getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(
+                  "High" !== e.trump &&
+                    "Low" !== e.trump &&
+                    i
+                      .getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(
+                        e.trump,
+                        e.trump
+                      )
+                      .some((e) => i.isSameCard(t, e))
+                    ? e.trump
+                    : t.suit,
+                  e.trump
+                );
+              if (n.some((e) => r.some((t) => i.isSameCard(t, e))))
+                return r.filter((e) => n.some((t) => i.isSameCard(t, e)));
             }
             return r;
           });
@@ -640,20 +650,20 @@ let System, __instantiateAsync, __instantiate;
     ["utils"],
     function (e, t) {
       "use strict";
-      var n;
+      var i;
       t && t.id;
       return {
         setters: [
           function (e) {
-            n = e;
+            i = e;
           },
         ],
         execute: function () {
           e("getOptionsForPartnersBestCardPickingPhase", (e, t) => {
-            const i = e.partner,
-              r = n.getPositionOfPartner(i),
-              s = 5 === n.getPlayerByPosition(r, e).hand.length ? i : r;
-            return t !== s ? [] : n.getPlayerByPosition(s, e).hand;
+            const n = e.partner,
+              r = i.getPositionOfPartner(n),
+              s = 5 === i.getPlayerByPosition(r, e).hand.length ? n : r;
+            return t !== s ? [] : i.getPlayerByPosition(s, e).hand;
           });
         },
       };
@@ -674,15 +684,15 @@ let System, __instantiateAsync, __instantiate;
     ],
     function (e, t) {
       "use strict";
-      var n, i, r, s, a, o, u, c, d, g, p, l, h, k, f;
+      var i, n, r, s, a, o, u, c, d, p, g, l, h, k, m;
       t && t.id;
       return {
         setters: [
           function (e) {
-            n = e;
+            i = e;
           },
           function (e) {
-            i = e;
+            n = e;
           },
           function (e) {
             r = e;
@@ -707,11 +717,11 @@ let System, __instantiateAsync, __instantiate;
           },
         ],
         execute: function () {
-          (g = (e) => {
+          (p = (e) => {
             const t = e;
             return void 0 !== t.rank && void 0 !== t.suit;
           }),
-            (p = (e) =>
+            (g = (e) =>
               [
                 "Pass",
                 "3",
@@ -749,7 +759,7 @@ let System, __instantiateAsync, __instantiate;
                     !1,
                     "Not all players have 6 cards in their hands each even though we aren't in the Trick-Taking Phase yet.",
                   ];
-                const n = t.reduce((e, t) => e.concat(t.hand), []);
+                const i = t.reduce((e, t) => e.concat(t.hand), []);
                 if (
                   !(
                     "Trick-Taking" !== e.name ||
@@ -765,18 +775,18 @@ let System, __instantiateAsync, __instantiate;
                     !1,
                     "One of the finished tricks has more than one card from the same player.",
                   ];
-                const i =
+                const n =
                     "Trick-Taking" === e.name
                       ? e.finishedTricks
                           .flatMap((e) => e.map(({ card: e }) => e))
                           .concat(e.currentTrick.map(({ card: e }) => e))
                       : [],
-                  r = n.concat(i);
+                  r = i.concat(n);
                 return 24 === r.length
                   ? r.every((e, t) =>
-                      r.every((n, i) => {
-                        if (t === i) return !0;
-                        return e.rank !== n.rank || e.suit !== n.suit;
+                      r.every((i, n) => {
+                        if (t === n) return !0;
+                        return e.rank !== i.rank || e.suit !== i.suit;
                       })
                     )
                     ? 4 !== [...new Set(t.map((e) => e.position))].length
@@ -820,17 +830,17 @@ let System, __instantiateAsync, __instantiate;
                     : []
                   : [])
             ),
-            e("isLegalOption", (f = (e, t, n) => k(t, n).includes(e))),
+            e("isLegalOption", (m = (e, t, i) => k(t, i).includes(e))),
             e("chooseOption", (e, t, a) => {
-              if (!f(e, t, a) || !h(t)) return t;
+              if (!m(e, t, a) || !h(t)) return t;
               const o = (() =>
-                "Bidding" === t.name && p(e)
-                  ? n.chooseOptionForBiddingPhase(e, t, a)
+                "Bidding" === t.name && g(e)
+                  ? i.chooseOptionForBiddingPhase(e, t, a)
                   : "Picking Trump" === t.name && l(e)
-                  ? i.chooseOptionForPickingTrumpPhase(e, t)
-                  : "Picking Partner's Best Card" === t.name && g(e)
+                  ? n.chooseOptionForPickingTrumpPhase(e, t)
+                  : "Picking Partner's Best Card" === t.name && p(e)
                   ? r.chooseOptionForPickingPartnersBestCardPhase(e, t, a)
-                  : "Trick-Taking" === t.name && g(e)
+                  : "Trick-Taking" === t.name && p(e)
                   ? s.chooseOptionForTrickTakingPhase(e, t, a)
                   : t)();
               if ("Game Over" === o.name) return o;
@@ -839,11 +849,11 @@ let System, __instantiateAsync, __instantiate;
             }),
             e("startGame", (e) => {
               const t = d.randomPlayerPosition(),
-                n = (t) => e.filter((e) => e.position === t)[0],
-                i = d.shuffleAndDealFourHands(),
+                i = (t) => e.filter((e) => e.position === t)[0],
+                n = d.shuffleAndDealFourHands(),
                 r = (e) => ({
-                  ...n(e),
-                  hand: [...d.getHandSliceViaPosition(e, i)],
+                  ...i(e),
+                  hand: [...d.getHandSliceViaPosition(e, n)],
                 }),
                 s = {
                   name: "Bidding",
