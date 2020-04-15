@@ -5,6 +5,10 @@ const CurrentTrick = ({ currentTrick = [] }) => {
       .container {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
+        width: max-content;
+      }
+      .card-container {
+        width: 1rem;
       }
     </style>
     <h2>Current Trick</h2>

@@ -31,13 +31,29 @@ const App = () => {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
       }
+      .tricks {
+        display: grid;
+        grid-auto-flow: column;
+        gap: 2rem;
+        align-items: flex-end;
+        width: max-content;
+      }
+      .tricks > * {
+        width: 9.4rem;
+      }
     </style>
     <be-game-header .game=${game}></be-game-header>
-    ${game.currentTrick && game.currentTrick.length > 0
-      ? html`<be-current-trick
-          .currentTrick=${game.currentTrick}
-        ></be-current-trick>`
-      : null}
+    <div class="tricks">
+      ${game.finishedTricks &&
+      game.finishedTricks.map(
+        (trick) => html`<be-trick .trick=${trick}></be-trick>`
+      )}
+      ${game.currentTrick && game.currentTrick.length > 0
+        ? html`<be-current-trick
+            .currentTrick=${game.currentTrick}
+          ></be-current-trick>`
+        : null}
+    </div>
     <div class="players">
       ${players.map(
         (player) =>
