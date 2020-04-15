@@ -36,8 +36,8 @@ let System, __instantiateAsync, __instantiate;
   function n(n) {
     for (const [r, s] of e.entries()) {
       const { f: e, exp: a } = s,
-        { execute: o, setters: u } = e(i(a), t(r, r === n));
-      delete s.f, (s.e = o), (s.s = u);
+        { execute: o, setters: c } = e(i(a), t(r, r === n));
+      delete s.f, (s.e = o), (s.s = c);
     }
   }
   async function r(t) {
@@ -108,7 +108,7 @@ let System, __instantiateAsync, __instantiate;
   }),
   System.register("utils", ["shuffle"], function (e, t) {
     "use strict";
-    var i, n, r, s, a, o, u;
+    var i, n, r, s, a, o, c, u, d, g, l;
     t && t.id;
     return {
       setters: [
@@ -148,60 +148,78 @@ let System, __instantiateAsync, __instantiate;
               : "Diamonds" === e
               ? "Hearts"
               : "Diamonds"),
-          e("getCardsOfSuitWhenTrumpOrderedByHierarchyDesc", (e, t) => {
+          e("cardsContainCard", (o = (e, t) => e.some((e) => u(t, e)))),
+          e("getAllCardsOrderedByHierarchyDesc", (e, t) => {
             if ("Low" === t || "High" === t) {
-              const i = [
-                { rank: "9", suit: e },
-                { rank: "10", suit: e },
-                { rank: "Jack", suit: e },
-                { rank: "Queen", suit: e },
-                { rank: "King", suit: e },
-                { rank: "Ace", suit: e },
-              ];
-              return "Low" === t ? i : i.reverse();
+              const i = c(e, t),
+                n = g().filter((e) => !o(i, e));
+              return i.concat(n);
             }
-            {
-              const i = a(t);
-              if (e === t) {
-                return [
-                  { rank: "Jack", suit: e },
-                  { rank: "Jack", suit: i },
-                  { rank: "Ace", suit: e },
-                  { rank: "King", suit: e },
-                  { rank: "Queen", suit: e },
-                  { rank: "10", suit: e },
-                  { rank: "9", suit: e },
-                ];
-              }
-              if (i === e) {
-                return [
-                  { rank: "Ace", suit: e },
-                  { rank: "King", suit: e },
-                  { rank: "Queen", suit: e },
-                  { rank: "10", suit: e },
-                  { rank: "9", suit: e },
-                ];
-              }
-              return [
-                { rank: "Ace", suit: e },
-                { rank: "King", suit: e },
-                { rank: "Queen", suit: e },
-                { rank: "Jack", suit: e },
-                { rank: "10", suit: e },
-                { rank: "9", suit: e },
-              ];
-            }
+            const i = c(t, t),
+              n = c(e, t),
+              r = g().filter((e) => !o(i, e) && !o(n, e));
+            return i.concat(n).concat(r);
           }),
-          e("isSameCard", (e, t) => e.rank === t.rank && e.suit === t.suit),
-          (o = (e, t) => (
+          e(
+            "getCardsOfSuitWhenTrumpOrderedByHierarchyDesc",
+            (c = (e, t) => {
+              if ("Low" === t || "High" === t) {
+                const i = [
+                  { rank: "9", suit: e },
+                  { rank: "10", suit: e },
+                  { rank: "Jack", suit: e },
+                  { rank: "Queen", suit: e },
+                  { rank: "King", suit: e },
+                  { rank: "Ace", suit: e },
+                ];
+                return "Low" === t ? i : i.reverse();
+              }
+              {
+                const i = a(t);
+                if (e === t) {
+                  return [
+                    { rank: "Jack", suit: e },
+                    { rank: "Jack", suit: i },
+                    { rank: "Ace", suit: e },
+                    { rank: "King", suit: e },
+                    { rank: "Queen", suit: e },
+                    { rank: "10", suit: e },
+                    { rank: "9", suit: e },
+                  ];
+                }
+                if (i === e) {
+                  return [
+                    { rank: "Ace", suit: e },
+                    { rank: "King", suit: e },
+                    { rank: "Queen", suit: e },
+                    { rank: "10", suit: e },
+                    { rank: "9", suit: e },
+                  ];
+                }
+                return [
+                  { rank: "Ace", suit: e },
+                  { rank: "King", suit: e },
+                  { rank: "Queen", suit: e },
+                  { rank: "Jack", suit: e },
+                  { rank: "10", suit: e },
+                  { rank: "9", suit: e },
+                ];
+              }
+            })
+          ),
+          e(
+            "isSameCard",
+            (u = (e, t) => e.rank === t.rank && e.suit === t.suit)
+          ),
+          (d = (e, t) => (
             (e = Math.ceil(e)),
             (t = Math.floor(t)),
             Math.floor(Math.random() * (t - e + 1)) + e
           )),
           e("randomPlayerPosition", () => {
-            return ["1", "2", "3", "4"][o(0, 3)];
+            return ["1", "2", "3", "4"][d(0, 3)];
           }),
-          () => [
+          (g = () => [
             { rank: "9", suit: "Clubs" },
             { rank: "10", suit: "Clubs" },
             { rank: "Jack", suit: "Clubs" },
@@ -226,34 +244,9 @@ let System, __instantiateAsync, __instantiate;
             { rank: "Queen", suit: "Spades" },
             { rank: "King", suit: "Spades" },
             { rank: "Ace", suit: "Spades" },
-          ],
+          ]),
           e("shuffleAndDealFourHands", () => {
-            const e = i.default([
-              { rank: "9", suit: "Clubs" },
-              { rank: "10", suit: "Clubs" },
-              { rank: "Jack", suit: "Clubs" },
-              { rank: "Queen", suit: "Clubs" },
-              { rank: "King", suit: "Clubs" },
-              { rank: "Ace", suit: "Clubs" },
-              { rank: "9", suit: "Diamonds" },
-              { rank: "10", suit: "Diamonds" },
-              { rank: "Jack", suit: "Diamonds" },
-              { rank: "Queen", suit: "Diamonds" },
-              { rank: "King", suit: "Diamonds" },
-              { rank: "Ace", suit: "Diamonds" },
-              { rank: "9", suit: "Hearts" },
-              { rank: "10", suit: "Hearts" },
-              { rank: "Jack", suit: "Hearts" },
-              { rank: "Queen", suit: "Hearts" },
-              { rank: "King", suit: "Hearts" },
-              { rank: "Ace", suit: "Hearts" },
-              { rank: "9", suit: "Spades" },
-              { rank: "10", suit: "Spades" },
-              { rank: "Jack", suit: "Spades" },
-              { rank: "Queen", suit: "Spades" },
-              { rank: "King", suit: "Spades" },
-              { rank: "Ace", suit: "Spades" },
-            ]);
+            const e = i.default(g());
             return [
               [e[0], e[1], e[2], e[3], e[4], e[5]],
               [e[6], e[7], e[8], e[9], e[10], e[11]],
@@ -261,8 +254,8 @@ let System, __instantiateAsync, __instantiate;
               [e[18], e[19], e[20], e[21], e[22], e[23]],
             ];
           }),
-          (u = (e) => ("1" === e ? 0 : "2" === e ? 1 : "3" === e ? 2 : 3)),
-          e("getHandSliceViaPosition", (e, t) => t[u(e)]),
+          (l = (e) => ("1" === e ? 0 : "2" === e ? 1 : "3" === e ? 2 : 3)),
+          e("getHandSliceViaPosition", (e, t) => t[l(e)]),
           e("getPlayerByPosition", (e, t) => {
             const i = t.teams[0].players
               .concat(t.teams[1].players)
@@ -390,7 +383,7 @@ let System, __instantiateAsync, __instantiate;
                     ? t.hand.filter((t) => !i.isSameCard(t, e))
                     : t.hand.concat([e]),
               }),
-              u = (e) => {
+              c = (e) => {
                 if (e.players.some((e) => e.position === t.partner)) {
                   return { ...e, players: [o(e.players[0]), o(e.players[1])] };
                 }
@@ -401,14 +394,14 @@ let System, __instantiateAsync, __instantiate;
                   name: "Trick-Taking",
                   playerSittingOut: t.partner,
                   dealer: t.dealer,
-                  teams: [u(t.teams[0]), u(t.teams[1])],
+                  teams: [c(t.teams[0]), c(t.teams[1])],
                   winningBid: t.winningBid,
                   trump: t.trump,
                   currentTrick: [],
                   finishedTricks: [],
                   cardPosition: i.getNextPosition(t.dealer),
                 }
-              : { ...t, teams: [u(t.teams[0]), u(t.teams[1])] };
+              : { ...t, teams: [c(t.teams[0]), c(t.teams[1])] };
           });
         },
       };
@@ -419,7 +412,7 @@ let System, __instantiateAsync, __instantiate;
     ["utils"],
     function (e, t) {
       "use strict";
-      var i, n, r, s, a, o, u;
+      var i, n, r, s, a, o, c;
       t && t.id;
       return {
         setters: [
@@ -428,11 +421,10 @@ let System, __instantiateAsync, __instantiate;
           },
         ],
         execute: function () {
-          (n = (e, t, n) => {
-            return i
-              .getCardsOfSuitWhenTrumpOrderedByHierarchyDesc(e, t)
-              .filter((e) => n.some((t) => i.isSameCard(t, e)))[0];
-          }),
+          (n = (e, t, n) =>
+            i
+              .getAllCardsOrderedByHierarchyDesc(e, t)
+              .filter((e) => i.cardsContainCard(n, e))[0]),
             (r = (e, t) => {
               const r = n(
                 e[0].card.suit,
@@ -453,16 +445,16 @@ let System, __instantiateAsync, __instantiate;
                 n = a(e);
               return t < i ? -1 * n : Math.max(t, n);
             }),
-            (u = (e, t, n) => {
+            (c = (e, t, n) => {
               const s = i.shuffleAndDealFourHands(),
                 a = (e) => ({
                   ...e,
                   hand: [...i.getHandSliceViaPosition(e.position, s)],
                 }),
-                u = [...t.currentTrick, { card: e, owner: n }],
-                c = t.finishedTricks.concat([u]),
+                c = [...t.currentTrick, { card: e, owner: n }],
+                u = t.finishedTricks.concat([c]),
                 d = (e) => {
-                  const i = c.reduce((i, n) => {
+                  const i = u.reduce((i, n) => {
                       const s = r(n, t.trump);
                       return (
                         i + (e.players.some((e) => e.position === s) ? 1 : 0)
@@ -491,51 +483,51 @@ let System, __instantiateAsync, __instantiate;
                   currentTrick: s,
                   finishedTricks: a,
                   dealer: o,
-                  trump: c,
+                  trump: u,
                   winningBid: d,
-                  playerSittingOut: p,
-                  teams: g,
-                  cardPosition: l,
+                  playerSittingOut: g,
+                  teams: l,
+                  cardPosition: p,
                 } = t,
                 h = 5 === a.length,
-                k = 3 === s.length || (!!p && 2 === s.length);
-              if (h && k) return u(e, t, n);
+                f = 3 === s.length || (!!g && 2 === s.length);
+              if (h && f) return c(e, t, n);
               const m = (t) => ({
                   name: t.name,
                   position: t.position,
                   hand: t.hand.filter((t) => !i.isSameCard(e, t)),
                 }),
-                f = (e) => ({
+                k = (e) => ({
                   players: [m(e.players[0]), m(e.players[1])],
                   points: e.points,
                 });
-              if (k) {
+              if (f) {
                 const t = [...s, { owner: n, card: e }];
                 return {
                   name: "Trick-Taking",
-                  cardPosition: r(t, c),
+                  cardPosition: r(t, u),
                   currentTrick: [],
                   dealer: o,
                   finishedTricks: [...a, t],
-                  trump: c,
+                  trump: u,
                   winningBid: d,
-                  playerSittingOut: p,
-                  teams: [f(g[0]), f(g[1])],
+                  playerSittingOut: g,
+                  teams: [k(l[0]), k(l[1])],
                 };
               }
               return {
                 name: "Trick-Taking",
                 cardPosition:
-                  p && i.getNextPosition(l) === p
-                    ? i.getNextPosition(i.getNextPosition(l))
-                    : i.getNextPosition(l),
+                  g && i.getNextPosition(p) === g
+                    ? i.getNextPosition(i.getNextPosition(p))
+                    : i.getNextPosition(p),
                 currentTrick: [...s, { owner: n, card: e }],
                 dealer: o,
                 finishedTricks: a,
-                trump: c,
+                trump: u,
                 winningBid: d,
-                playerSittingOut: p,
-                teams: [f(g[0]), f(g[1])],
+                playerSittingOut: g,
+                teams: [k(l[0]), k(l[1])],
               };
             });
         },
@@ -684,7 +676,7 @@ let System, __instantiateAsync, __instantiate;
     ],
     function (e, t) {
       "use strict";
-      var i, n, r, s, a, o, u, c, d, p, g, l, h, k, m;
+      var i, n, r, s, a, o, c, u, d, g, l, p, h, f, m;
       t && t.id;
       return {
         setters: [
@@ -707,21 +699,21 @@ let System, __instantiateAsync, __instantiate;
             o = e;
           },
           function (e) {
-            u = e;
+            c = e;
           },
           function (e) {
-            c = e;
+            u = e;
           },
           function (e) {
             d = e;
           },
         ],
         execute: function () {
-          (p = (e) => {
+          (g = (e) => {
             const t = e;
             return void 0 !== t.rank && void 0 !== t.suit;
           }),
-            (g = (e) =>
+            (l = (e) =>
               [
                 "Pass",
                 "3",
@@ -731,7 +723,7 @@ let System, __instantiateAsync, __instantiate;
                 "Partner's Best Card",
                 "Going Alone",
               ].includes(e)),
-            (l = (e) =>
+            (p = (e) =>
               ["Clubs", "Diamonds", "Hearts", "High", "Low", "Spades"].includes(
                 e
               )),
@@ -817,35 +809,45 @@ let System, __instantiateAsync, __instantiate;
             ),
             e(
               "getOptions",
-              (k = (e, t) =>
+              (f = (e, t) =>
                 h(e)[0]
                   ? "Bidding" === e.name
                     ? a.getOptionsForBiddingPhase(e, t)
                     : "Picking Trump" === e.name
                     ? o.getOptionsForTrumpPickingPhase(e, t)
                     : "Trick-Taking" === e.name
-                    ? u.getOptionsForTrickTakingPhase(e, t)
+                    ? c.getOptionsForTrickTakingPhase(e, t)
                     : "Picking Partner's Best Card" === e.name
-                    ? c.getOptionsForPartnersBestCardPickingPhase(e, t)
+                    ? u.getOptionsForPartnersBestCardPickingPhase(e, t)
                     : []
                   : [])
             ),
-            e("isLegalOption", (m = (e, t, i) => k(t, i).includes(e))),
+            e(
+              "isLegalOption",
+              (m = (e, t, i) =>
+                f(t, i).some((t) => JSON.stringify(t) === JSON.stringify(e)))
+            ),
             e("chooseOption", (e, t, a) => {
-              if (!m(e, t, a) || !h(t)) return t;
+              if (!m(e, t, a) || !h(t)) {
+                if (m(e, t, a)) {
+                  const [, e] = h(t);
+                  console.warn(e);
+                } else console.warn("Option is illegal");
+                return t;
+              }
               const o = (() =>
-                "Bidding" === t.name && g(e)
+                "Bidding" === t.name && l(e)
                   ? i.chooseOptionForBiddingPhase(e, t, a)
-                  : "Picking Trump" === t.name && l(e)
+                  : "Picking Trump" === t.name && p(e)
                   ? n.chooseOptionForPickingTrumpPhase(e, t)
-                  : "Picking Partner's Best Card" === t.name && p(e)
+                  : "Picking Partner's Best Card" === t.name && g(e)
                   ? r.chooseOptionForPickingPartnersBestCardPhase(e, t, a)
-                  : "Trick-Taking" === t.name && p(e)
+                  : "Trick-Taking" === t.name && g(e)
                   ? s.chooseOptionForTrickTakingPhase(e, t, a)
                   : t)();
               if ("Game Over" === o.name) return o;
-              const [u, c] = h(o);
-              return u ? o : (console.warn(c), t);
+              const [c, u] = h(o);
+              return c ? o : (console.warn(u), t);
             }),
             e("startGame", (e) => {
               const t = d.randomPlayerPosition(),
