@@ -9,7 +9,10 @@
       }
     </style>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
     <title>Bid Euchre</title>
     <meta name="description" content="Play Bid Euchre online with friends!" />
     <link
@@ -33,7 +36,6 @@
     <link rel="preconnect" href="https://unpkg.com" />
     <link rel="dns-prefetch" href="https://unpkg.com" />
     <link rel="modulepreload" href="./dependencies.js" />
-    <link rel="modulepreload" href="./web-components/App.js" />
     <link rel="modulepreload" href="./web-components/GameHeader.js" />
     <link rel="modulepreload" href="./web-components/Card.js" />
     <link rel="modulepreload" href="./web-components/Player.js" />
@@ -67,7 +69,8 @@
   </head>
   <body>
     <noscript>This site requires JavaScript to be enabled.</noscript>
-    <be-app></be-app>
+    <be-header></be-header>
+    <div id="root"></div>
     <script src="./web-components/index.js" type="module"></script>
   </body>
 </html>

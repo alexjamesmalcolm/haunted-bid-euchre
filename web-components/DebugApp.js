@@ -9,7 +9,7 @@ const initialGame = startGame([
   { name: "Noodle", position: "4" },
 ]);
 
-const App = () => {
+const DebugApp = () => {
   const [game, setGame] = useState(initialGame);
   console.log({ game });
   const [isServerUp, setIsServerUp] = useState(false);
@@ -68,4 +68,4 @@ const App = () => {
     </div>`;
 };
 
-customElements.define("be-app", component(App));
+customElements.define("be-debug-app", component(DebugApp));
