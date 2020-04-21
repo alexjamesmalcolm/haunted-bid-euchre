@@ -3,14 +3,44 @@ import {
   component,
   useCallback,
   useState,
+  useMemo,
   Router,
 } from "../dependencies.js";
 import { Store } from "../store.js";
-import { startLobby } from "../api/index.js";
+import { startLobby, getAllLobbies, getAllGames } from "../api.js";
+import { useTypicalRequest } from "../hooks/useTypicalRequest.js";
 
 const HomeView = () => {
+  const {
+    data: lobbyData,
+    hasError: lobbyHasError,
+    isLoading: isLoadingLobby,
+  } = useTypicalRequest(getAllLobbies);
+  const {
+    data: gameData,
+    hasError: gameHasError,
+    isLoading: isLoadingGame,
+  } = useTypicalRequest(getAllGames);
   const [hasConfirmedName, setHasConfirmedName] = useState(false);
   const { name, setName } = Store;
+
+  const isInLobby = useMemo(() => {
+    if (!lobbyData || !hasConfirmedName) return false;
+    const { lobbies } = lobbyData;
+    return lobbies.some((lobby) =>
+      lobby.players.map((player) => player.name).includes(name)
+    );
+  }, [lobbyData, hasConfirmedName, name]);
+
+  const isInGame = useMemo(() => {
+    if (!gameData || !hasConfirmedName) return false;
+    const { games } = gameData;
+    return games.some((game) => {
+      debugger;
+      return true;
+    });
+  }, [gameData, hasConfirmedName, name]);
+
   const handleSubmit = useCallback(
     (e) => {
       const value =

@@ -1,9 +1,11 @@
-import { html, component, Router } from "../dependencies.js";
-import { getAllLobbies, joinLobby } from "../api/index.js";
+import { html, component, Router, useCallback } from "../dependencies.js";
+import { getAllLobbies, joinLobby } from "../api.js";
 import { useTypicalRequest } from "../hooks/useTypicalRequest.js";
+import { Store } from "../store.js";
 
-const Lobbies = () => {
+const LobbiesView = () => {
   const { data, hasError, isLoading } = useTypicalRequest(getAllLobbies);
+  const { name } = Store;
   if (hasError) {
     return html`<p>There was an issue loading the lobbies.</p>`;
   }
@@ -11,11 +13,15 @@ const Lobbies = () => {
     return html`<p>Loading lobbies...</p>`;
   }
   const { lobbies } = data;
-  const handleJoin = async (e, lobbyId) => {
-    e.preventDefault();
-    await joinLobby({ lobbyId, name });
-    Router.go(`/lobby/${lobbyId}`);
-  };
+  const handleJoin = useCallback(
+    async (e, lobbyId) => {
+      e.preventDefault();
+      await joinLobby({ lobbyId, name });
+      Router.go(`/lobby/${lobbyId}`);
+    },
+    [name]
+  );
+  const handleGoBack = useCallback(() => Router.go("/"), []);
   return html`<style>
       .container {
         display: grid;
@@ -48,7 +54,10 @@ const Lobbies = () => {
       }
     </style>
     <div class="container">
-      <h2>Lobbies</h2>
+      <header>
+        <be-button .onclick=${handleGoBack}>Back</be-button>
+        <h2>Lobbies</h2>
+      </header>
       ${lobbies.map(
         (lobby) =>
           html`<div class="lobby">
@@ -67,4 +76,4 @@ const Lobbies = () => {
     </div>`;
 };
 
-customElements.define("be-lobbies", component(Lobbies));
+customElements.define("lobbies-view", component(LobbiesView));
