@@ -1,15 +1,18 @@
-import { useEffect, useState } from "../dependencies.js";
+import { useEffect, useState, useCallback } from "../dependencies.js";
 
-export const useTypicalRequest = (request) => {
+const unresolvedPromise = new Promise(() => {});
+
+export const useTypicalRequest = (request = () => unresolvedPromise) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [data, setData] = useState();
-  useEffect(() => {
+  const makeRequest = useCallback(() => {
     setIsLoading(true);
     request()
       .then(setData)
       .catch(() => setHasError(true))
       .finally(() => setIsLoading(false));
   }, [request]);
-  return { isLoading, hasError, data };
+  useEffect(() => makeRequest(), [makeRequest]);
+  return { isLoading, hasError, data, forceAcquire: makeRequest };
 };
