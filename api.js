@@ -76,6 +76,11 @@ export const swapPositionsInLobby = async ({
   });
 };
 
+export const endLobby = (lobbyId) =>
+  fetch(endpoints.singleLobby(lobbyId), { method: "DELETE" }).then(
+    (response) => response.ok
+  );
+
 export const getAllGames = () =>
   fetch(endpoints.game).then((response) => response.json());
 
