@@ -27,7 +27,7 @@ const LobbyView = () => {
     await leaveLobby({ lobbyId, name });
     Router.go("/lobby");
   }, [lobbyId, name]);
-  if (isLoading) return html`<p>Loading...</p>`;
+  if (isLoading && !lobbyData) return html`<p>Loading...</p>`;
   if (hasError)
     return html`<p>
       There was an issue loading the lobby. Please complain to Alex.
