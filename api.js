@@ -1,8 +1,8 @@
 const resourceName =
-  location.hostname === "localhost" ? "localhost:3000" : "euchre.bid/api";
+  location.hostname === "localhost" ? "localhost:3000" : "euchre.bid";
 
 const createEndpoint = (path) =>
-  `${location.protocol}//${resourceName}/${path}`;
+  `${location.protocol}//${resourceName}/api/${path}`;
 
 const headers = { "Content-Type": "application/json" };
 
