@@ -4,9 +4,15 @@ import {
   useMemo,
   useCallback,
   Router,
+  useEffect,
 } from "../dependencies.js";
 import { useLobby } from "../hooks/useLobby.js";
-import { leaveLobby, endLobby, swapPositionsInLobby } from "../api.js";
+import {
+  leaveLobby,
+  endLobby,
+  swapPositionsInLobby,
+  startGame,
+} from "../api.js";
 import { Store } from "../store.js";
 
 const LobbyView = () => {
@@ -19,6 +25,10 @@ const LobbyView = () => {
     () => lobbyData && lobbyData.lobby && lobbyData.lobby.lobbyLeader === name,
     [lobbyData, name]
   );
+  const isLobbyReady = useMemo(
+    () => lobbyData && lobbyData.lobby && lobbyData.lobby.players.length === 4,
+    [lobbyData]
+  );
   const handleEndLobby = useCallback(async () => {
     await endLobby(lobbyId);
     Router.go("/lobby");
@@ -27,12 +37,29 @@ const LobbyView = () => {
     await leaveLobby({ lobbyId, name });
     Router.go("/lobby");
   }, [lobbyId, name]);
+  const handleStartGame = useCallback(async () => {
+    const gameData = await startGame(lobbyId);
+    const { id: gameId } = gameData.game;
+    Router.go(`/game/${gameId}`);
+  }, [lobbyId]);
+  useEffect(() => {
+    if (!isLoading) {
+      const timeoutId = setTimeout(forceAcquire, 5000);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isLoading, forceAcquire]);
+  useEffect(() => {
+    if (lobbyData.lobby.game) {
+      Router.go(`/game/${lobbyData.lobby.game.id}`);
+    }
+  }, [lobbyData]);
   if (isLoading && !lobbyData) return html`<p>Loading...</p>`;
   if (hasError)
     return html`<p>
       There was an issue loading the lobby. Please complain to Alex.
     </p>`;
-  const { players } = lobbyData.lobby;
+  console.log(lobbyData);
+  const { players, lobbyLeader } = lobbyData.lobby;
   const you = players.find((player) => player.name === name);
   return html`<style>
       .teams {
@@ -94,6 +121,11 @@ const LobbyView = () => {
         </div>`
         )}
       </div>
+      ${isLobbyReady
+        ? isLeader
+          ? html`<be-button .onclick=${handleStartGame}>Start</be-button>`
+          : html`<p>Waiting for ${lobbyLeader} to start the game</p>`
+        : html`<p>Waiting for more players...</p>`}
     </div>`;
 };
 

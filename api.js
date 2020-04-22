@@ -15,47 +15,50 @@ const endpoints = {
     createEndpoint(`game/${gameId}${position ? `?position=${position}` : ""}`),
 };
 
+const getJsonOrRejectIfError = (response = new Response()) =>
+  response.ok ? response.json() : Promise.reject();
+
 export const checkIfApiIsUp = () =>
-  fetch(endpoints.status).then((response) => response.status === 200);
+  fetch(endpoints.status).then((response) => response.ok);
 
 export const getAllLobbies = () =>
-  fetch(endpoints.lobby).then((response) => response.json());
+  fetch(endpoints.lobby).then(getJsonOrRejectIfError);
 
 export const getLobby = (lobbyId) =>
-  fetch(endpoints.singleLobby(lobbyId)).then((response) => response.json());
+  fetch(endpoints.singleLobby(lobbyId))
+    .then(getJsonOrRejectIfError)
+    .then((data) => (data["error"] ? Promise.reject(data) : data));
 
 export const startLobby = (name) =>
   fetch(endpoints.lobby, {
     method: "POST",
     body: JSON.stringify({ name }),
     headers,
-  }).then((response) => response.json());
+  }).then(getJsonOrRejectIfError);
 
-const updateLobby = (lobby) =>
-  fetch(endpoints.lobby, {
-    method: "PUT",
-    body: JSON.stringify({ lobby }),
+const updatePlayersInLobby = (lobbyId, players) =>
+  fetch(endpoints.singleLobby(lobbyId), {
+    method: "PATCH",
+    body: JSON.stringify({ players }),
     headers,
-  }).then((response) => response.json());
+  }).then(getJsonOrRejectIfError);
 
 export const joinLobby = async ({ lobbyId, name }) => {
   const { lobby } = await getLobby(lobbyId);
   const { players } = lobby;
-  return updateLobby({
-    ...lobby,
-    players: players.concat([
-      { name, position: new String(players.length + 1) },
-    ]),
-  });
+  return updatePlayersInLobby(
+    lobbyId,
+    players.concat([{ name, position: new String(players.length + 1) }])
+  );
 };
 
 export const leaveLobby = async ({ lobbyId, name }) => {
   const { lobby } = await getLobby(lobbyId);
   const { players } = lobby;
-  return updateLobby({
-    ...lobby,
-    players: players.filter((player) => player.name !== name),
-  });
+  return updatePlayersInLobby(
+    lobbyId,
+    players.filter((player) => player.name !== name)
+  );
 };
 
 export const swapPositionsInLobby = async ({
@@ -65,15 +68,15 @@ export const swapPositionsInLobby = async ({
 }) => {
   const { lobby } = await getLobby(lobbyId);
   const { players } = lobby;
-  return updateLobby({
-    ...lobby,
-    players: players.map((player) => {
+  return updatePlayersInLobby(
+    lobbyId,
+    players.map((player) => {
       if (player.position === position)
         return { ...player, position: desiredPosition };
       if (player.position === desiredPosition) return { ...player, position };
       return player;
-    }),
-  });
+    })
+  );
 };
 
 export const endLobby = (lobbyId) =>
@@ -82,7 +85,7 @@ export const endLobby = (lobbyId) =>
   );
 
 export const getAllGames = () =>
-  fetch(endpoints.game).then((response) => response.json());
+  fetch(endpoints.game).then(getJsonOrRejectIfError);
 
 export const getGame = ({ gameId, position }) =>
   fetch(endpoints.singleGame(gameId, position)).then((response) =>
@@ -94,11 +97,11 @@ export const startGame = (lobbyId) =>
     method: "POST",
     body: JSON.stringify({ lobbyId }),
     headers,
-  }).then((response) => response.json());
+  }).then(getJsonOrRejectIfError);
 
 export const chooseOption = ({ gameId, option, position }) =>
   fetch(endpoints.singleGame(gameId), {
     method: "PATCH",
     body: JSON.stringify({ option, position }),
     headers,
-  }).then((response) => response.json());
+  }).then(getJsonOrRejectIfError);
