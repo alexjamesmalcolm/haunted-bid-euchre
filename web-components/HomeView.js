@@ -116,7 +116,7 @@ const HomeView = () => {
               </a>
             </be-button>
             <be-button class="button" .onclick=${handleCreateLobby}>
-              <p class="button-content" .onclick=${handleCreateLobby}>
+              <p class="button-content">
                 Create a Lobby
               </p>
             </be-button>`
