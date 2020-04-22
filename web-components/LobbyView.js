@@ -49,7 +49,7 @@ const LobbyView = () => {
     }
   }, [isLoading, forceAcquire]);
   useEffect(() => {
-    if (lobbyData.lobby.game) {
+    if (lobbyData.lobby && lobbyData.lobby.game) {
       Router.go(`/game/${lobbyData.lobby.game.id}`);
     }
   }, [lobbyData]);
