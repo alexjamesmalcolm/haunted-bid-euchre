@@ -2,6 +2,7 @@ import {
   html,
   component,
   useCallback,
+  useEffect,
   useState,
   useMemo,
   Router,
@@ -24,22 +25,27 @@ const HomeView = () => {
   const [hasConfirmedName, setHasConfirmedName] = useState(false);
   const { name, setName } = Store;
 
-  const isInLobby = useMemo(() => {
+  const lobbyPlayerIsIn = useMemo(() => {
     if (!lobbyData || !hasConfirmedName) return false;
     const { lobbies } = lobbyData;
-    return lobbies.some((lobby) =>
+    return lobbies.find((lobby) =>
       lobby.players.map((player) => player.name).includes(name)
     );
   }, [lobbyData, hasConfirmedName, name]);
 
-  const isInGame = useMemo(() => {
-    if (!gameData || !hasConfirmedName) return false;
-    const { games } = gameData;
-    return games.some((game) => {
-      debugger;
-      return true;
-    });
-  }, [gameData, hasConfirmedName, name]);
+  const gamePlayerIsIn = useMemo(
+    () =>
+      lobbyPlayerIsIn && lobbyPlayerIsIn.game ? lobbyPlayerIsIn.game : false,
+    [lobbyPlayerIsIn]
+  );
+
+  useEffect(() => {
+    if (gamePlayerIsIn) {
+      Router.go(`/game/${gamePlayerIsIn.id}`);
+    } else if (lobbyPlayerIsIn) {
+      Router.go(`/lobby/${lobbyPlayerIsIn.id}`);
+    }
+  }, [gamePlayerIsIn]);
 
   const handleSubmit = useCallback(
     (e) => {
