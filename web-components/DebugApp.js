@@ -1,4 +1,9 @@
-import { html, component, useMemo } from "../dependencies/index.js";
+import {
+  html,
+  component,
+  useMemo,
+  useCallback,
+} from "../dependencies/index.js";
 import { startGame, getOptions } from "../game-engine.js";
 import { chooseOption } from "../api.js";
 import { useGame } from "../hooks/useGame.js";
@@ -15,17 +20,21 @@ const DebugApp = () => {
   const { data: gameData, forceAcquire, hasError, isLoading } = useGame(gameId);
   const players = useMemo(() => {
     if (!isLoading && !hasError) {
-      return game.teams.reduce(
+      return gameData.game.phase.teams.reduce(
         (accumulator, team) => accumulator.concat(team.players),
         []
       );
     }
     return [];
   }, [isLoading, hasError]);
-  console.log(isLoading, hasError);
+  const handleOptionSelection = (position) => async (option) => {
+    await chooseOption({ gameId: gameData.game.id, option, position });
+    forceAcquire();
+  };
   if (isLoading) {
     return html`<be-loading .color=${"#000"} .message=${"Making move..."} />`;
   }
+  const { phase } = gameData.game;
   return html`<style>
       .players {
         display: grid;
@@ -42,15 +51,15 @@ const DebugApp = () => {
         width: 9.4rem;
       }
     </style>
-    <be-game-header .game=${game}></be-game-header>
+    <be-game-header .game=${phase}></be-game-header>
     <div class="tricks">
-      ${game.finishedTricks &&
-      game.finishedTricks.map(
+      ${phase.finishedTricks &&
+      phase.finishedTricks.map(
         (trick) => html`<be-trick .trick=${trick}></be-trick>`
       )}
-      ${game.currentTrick && game.currentTrick.length > 0
+      ${phase.currentTrick && phase.currentTrick.length > 0
         ? html`<be-current-trick
-            .currentTrick=${game.currentTrick}
+            .currentTrick=${phase.currentTrick}
           ></be-current-trick>`
         : null}
     </div>
@@ -58,10 +67,10 @@ const DebugApp = () => {
       ${players.map(
         (player) =>
           html`<be-player
-            .options=${getOptions(game, player.position)}
+            .options=${getOptions(phase, player.position)}
             .name=${player.name}
             .hand=${player.hand}
-            .onOptionSelection=${handleOptionSelection}
+            .onOptionSelection=${handleOptionSelection(player.position)}
           ></be-player>`
       )}
     </div>`;

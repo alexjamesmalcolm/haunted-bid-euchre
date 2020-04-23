@@ -67,7 +67,7 @@ const Player = ({
                   ${option}
                 </button>`
               )}
-            </div> `
+            </div>`
         : null
     }
     </div>`;

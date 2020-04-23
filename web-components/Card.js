@@ -12,12 +12,12 @@ const Card = ({ rank, suit, isFacingUp = true }) => {
       ? html`<img
           alt="${rank} of ${suit}"
           class="card"
-          src="./images/cards/${getShortRank()}${getShortSuit()}.svg"
+          src="/images/cards/${getShortRank()}${getShortSuit()}.svg"
         />`
       : html`<img
           alt="Face down card"
           class="card"
-          src="./images/cards/RED_BACK.svg"
+          src="/images/cards/RED_BACK.svg"
         />`}`;
 };
 
