@@ -1,4 +1,4 @@
-import { html, component, Router } from "../dependencies.js";
+import { html, component, Router } from "../dependencies/index.js";
 
 const NotFoundView = () => {
   return html`<style>

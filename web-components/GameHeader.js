@@ -1,4 +1,4 @@
-import { html, component } from "../dependencies.js";
+import { html, component } from "../dependencies/index.js";
 import { determineIfPhaseIsLegal } from "../game-engine.js";
 
 const GameHeader = ({ game }) => {

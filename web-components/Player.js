@@ -1,4 +1,4 @@
-import { html, component } from "../dependencies.js";
+import { html, component } from "../dependencies/index.js";
 
 const Player = ({
   options,

@@ -1,30 +1,30 @@
-import { html, component, useState, useEffect } from "../dependencies.js";
-import { startGame, getOptions, chooseOption } from "../game-engine.js";
-import { checkIfApiIsUp } from "../api/index.js";
+import { html, component, useMemo } from "../dependencies/index.js";
+import { startGame, getOptions } from "../game-engine.js";
+import { chooseOption } from "../api.js";
+import { useGame } from "../hooks/useGame.js";
 
-const initialGame = startGame([
-  { name: "Julia", position: "1" },
-  { name: "Serena", position: "2" },
-  { name: "Larry", position: "3" },
-  { name: "Noodle", position: "4" },
-]);
+// const initialGame = startGame([
+//   { name: "Julia", position: "1" },
+//   { name: "Serena", position: "2" },
+//   { name: "Larry", position: "3" },
+//   { name: "Noodle", position: "4" },
+// ]);
 
 const DebugApp = () => {
-  const [game, setGame] = useState(initialGame);
-  console.log({ game });
-  const [isServerUp, setIsServerUp] = useState(false);
-  const players = game.teams.reduce(
-    (accumulator, team) => accumulator.concat(team.players),
-    []
-  );
-  useEffect(() => {
-    checkIfApiIsUp().then(setIsServerUp);
-  }, []);
-  if (!isServerUp) {
-    return html`<be-loading
-      .color=${"#000"}
-      .message=${"Connecting to server..."}
-    />`;
+  const gameId = location.pathname.split("/debug-game/")[1];
+  const { data: gameData, forceAcquire, hasError, isLoading } = useGame(gameId);
+  const players = useMemo(() => {
+    if (!isLoading && !hasError) {
+      return game.teams.reduce(
+        (accumulator, team) => accumulator.concat(team.players),
+        []
+      );
+    }
+    return [];
+  }, [isLoading, hasError]);
+  console.log(isLoading, hasError);
+  if (isLoading) {
+    return html`<be-loading .color=${"#000"} .message=${"Making move..."} />`;
   }
   return html`<style>
       .players {
@@ -61,8 +61,7 @@ const DebugApp = () => {
             .options=${getOptions(game, player.position)}
             .name=${player.name}
             .hand=${player.hand}
-            .onOptionSelection=${(option) =>
-              setGame(chooseOption(option, game, player.position))}
+            .onOptionSelection=${handleOptionSelection}
           ></be-player>`
       )}
     </div>`;

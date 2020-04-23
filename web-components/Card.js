@@ -1,4 +1,4 @@
-import { html, component } from "../dependencies.js";
+import { html, component } from "../dependencies/index.js";
 
 const Card = ({ rank, suit, isFacingUp = true }) => {
   const getShortRank = () => (rank == "10" ? "10" : rank.slice(0, 1));

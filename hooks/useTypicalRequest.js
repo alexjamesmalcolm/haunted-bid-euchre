@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "../dependencies.js";
+import { useEffect, useState, useCallback } from "../dependencies/index.js";
 
 const unresolvedPromise = new Promise(() => {});
 

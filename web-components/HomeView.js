@@ -6,7 +6,7 @@ import {
   useState,
   useMemo,
   Router,
-} from "../dependencies.js";
+} from "../dependencies/index.js";
 import { Store } from "../store.js";
 import { startLobby, getAllLobbies, getAllGames } from "../api.js";
 import { useTypicalRequest } from "../hooks/useTypicalRequest.js";

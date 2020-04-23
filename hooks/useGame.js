@@ -1,13 +1,13 @@
 import { useMemo } from "../dependencies/index.js";
-import { getLobby } from "../api.js";
+import { getGame } from "../api.js";
 import { useTypicalRequest } from "./useTypicalRequest.js";
 
-export const useLobby = (lobbyId) => {
+export const useGame = (gameId, position = "") => {
   const request = useMemo(() => {
-    if (lobbyId) {
-      return () => getLobby(lobbyId);
+    if (gameId) {
+      return () => getGame({ gameId, position });
     }
-  }, [lobbyId]);
+  }, [gameId, position]);
   const { data, hasError, isLoading, forceAcquire } = useTypicalRequest(
     request
   );

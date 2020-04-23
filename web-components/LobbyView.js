@@ -5,7 +5,7 @@ import {
   useCallback,
   Router,
   useEffect,
-} from "../dependencies.js";
+} from "../dependencies/index.js";
 import { useLobby } from "../hooks/useLobby.js";
 import {
   leaveLobby,
@@ -49,7 +49,7 @@ const LobbyView = () => {
     }
   }, [isLoading, forceAcquire]);
   useEffect(() => {
-    if (lobbyData.lobby && lobbyData.lobby.game) {
+    if (lobbyData && lobbyData.lobby && lobbyData.lobby.game) {
       Router.go(`/game/${lobbyData.lobby.game.id}`);
     }
   }, [lobbyData]);

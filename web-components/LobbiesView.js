@@ -1,4 +1,4 @@
-import { html, component, Router, useCallback } from "../dependencies.js";
+import { html, component, Router, useCallback } from "../dependencies/index.js";
 import { getAllLobbies, joinLobby } from "../api.js";
 import { useTypicalRequest } from "../hooks/useTypicalRequest.js";
 import { Store } from "../store.js";
