@@ -43,12 +43,6 @@ const LobbyView = () => {
     Router.go(`/game/${gameId}`);
   }, [lobbyId]);
   useEffect(() => {
-    if (!isLoading) {
-      const timeoutId = setTimeout(forceAcquire, 5000);
-      return () => clearTimeout(timeoutId);
-    }
-  }, [isLoading, forceAcquire]);
-  useEffect(() => {
     if (lobbyData && lobbyData.lobby && lobbyData.lobby.game) {
       Router.go(`/game/${lobbyData.lobby.game.id}`);
     }

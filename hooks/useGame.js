@@ -9,7 +9,8 @@ export const useGame = (gameId, position = "") => {
     }
   }, [gameId, position]);
   const { data, hasError, isLoading, forceAcquire } = useTypicalRequest(
-    request
+    request,
+    1500
   );
   return { data, hasError, isLoading, forceAcquire };
 };

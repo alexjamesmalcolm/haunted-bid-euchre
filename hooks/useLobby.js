@@ -9,7 +9,8 @@ export const useLobby = (lobbyId) => {
     }
   }, [lobbyId]);
   const { data, hasError, isLoading, forceAcquire } = useTypicalRequest(
-    request
+    request,
+    5000
   );
   return { data, hasError, isLoading, forceAcquire };
 };
