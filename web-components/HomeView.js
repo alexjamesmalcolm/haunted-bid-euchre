@@ -10,6 +10,7 @@ import {
 import { Store } from "../store.js";
 import { startLobby, getAllLobbies, getAllGames } from "../api.js";
 import { useTypicalRequest } from "../hooks/useTypicalRequest.js";
+import { useGoogleLogin } from "../hooks/useGoogleLogin/index.js";
 
 const HomeView = () => {
   const {
@@ -22,16 +23,24 @@ const HomeView = () => {
     hasError: gameHasError,
     isLoading: isLoadingGame,
   } = useTypicalRequest(getAllGames);
-  const [hasConfirmedName, setHasConfirmedName] = useState(false);
   const { name, setName } = Store;
-
+  const { signIn, loaded: signedIn } = useGoogleLogin({
+    onSuccess: (res) => {
+      setName(res.profileObj.name);
+    },
+    onFailure: (res) => {
+      console.warn(res);
+    },
+    clientId:
+      "1046915334052-fg0ah1qglsbu2ef240e4ddiiftv70nrq.apps.googleusercontent.com",
+  });
   const lobbyPlayerIsIn = useMemo(() => {
-    if (!lobbyData || !hasConfirmedName) return false;
+    if (!lobbyData || !signedIn) return false;
     const { lobbies } = lobbyData;
     return lobbies.find((lobby) =>
       lobby.players.map((player) => player.name).includes(name)
     );
-  }, [lobbyData, hasConfirmedName, name]);
+  }, [lobbyData, name, signedIn]);
 
   const gamePlayerIsIn = useMemo(
     () =>
@@ -47,21 +56,11 @@ const HomeView = () => {
     }
   }, [gamePlayerIsIn]);
 
-  const handleSubmit = useCallback(
-    (e) => {
-      const value =
-        e.target.className === "form"
-          ? e.target.name.value
-          : e.target.parentElement.parentElement.name.value;
-      setName(value);
-      setHasConfirmedName(true);
-    },
-    [setName]
-  );
   const handleCreateLobby = useCallback(async () => {
     const { lobby } = await startLobby(name);
     Router.go(`/lobby/${lobby.id}`);
   }, [name]);
+
   return html`<style>
       .container {
         display: flex;
@@ -106,15 +105,9 @@ const HomeView = () => {
       }
     </style>
     <div class="container">
-      ${hasConfirmedName
+      ${signedIn
         ? html`<div class="name-container">
               <p>Name: ${name}</p>
-              <be-button
-                .color=${"secondary"}
-                .onclick=${() => setHasConfirmedName(false)}
-              >
-                Change Name
-              </be-button>
             </div>
             <be-button class="button">
               <a class="button-content" href="/lobby">
@@ -126,16 +119,11 @@ const HomeView = () => {
                 Create a Lobby
               </p>
             </be-button>`
-        : html`<form class="form" .onsubmit=${handleSubmit}>
-            <label for="name">What's your name?</label>
-            <input id="name" class="input" autofocus value=${name} />
-            <be-button .type=${"submit"}>
-              <span class="confirm-contents" .onclick=${handleSubmit}>
-                Confirm
-              </span>
-            </be-button>
-          </form>`}
+        : html`<be-button .onclick=${signIn}>Login</be-button>`}
     </div>`;
 };
 
-customElements.define("home-view", component(HomeView));
+customElements.define(
+  "home-view",
+  component(HomeView, { useShadowDOM: false })
+);
