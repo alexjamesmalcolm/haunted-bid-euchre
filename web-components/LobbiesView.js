@@ -1,11 +1,11 @@
 import { html, component, Router, useCallback } from "../dependencies/index.js";
 import { getAllLobbies, joinLobby } from "../api.js";
 import { useTypicalRequest } from "../hooks/useTypicalRequest.js";
-import { Store } from "../store.js";
+import { useStore } from "../hooks/useStore.js";
 
 const LobbiesView = () => {
   const { data, hasError, isLoading } = useTypicalRequest(getAllLobbies);
-  const { name } = Store;
+  const { name } = useStore();
   if (hasError) {
     return html`<p>There was an issue loading the lobbies.</p>`;
   }

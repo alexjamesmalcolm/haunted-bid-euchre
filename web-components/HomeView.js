@@ -3,14 +3,13 @@ import {
   component,
   useCallback,
   useEffect,
-  useState,
   useMemo,
   Router,
 } from "../dependencies/index.js";
-import { Store } from "../store.js";
 import { startLobby, getAllLobbies, getAllGames } from "../api.js";
 import { useTypicalRequest } from "../hooks/useTypicalRequest.js";
-import { useGoogleLogin } from "../hooks/useGoogleLogin/index.js";
+import { useGoogleLogin } from "../hooks/googleLogin/useGoogleLogin.js";
+import { useStore } from "../hooks/useStore.js";
 
 const HomeView = () => {
   const {
@@ -23,11 +22,18 @@ const HomeView = () => {
     hasError: gameHasError,
     isLoading: isLoadingGame,
   } = useTypicalRequest(getAllGames);
-  const { name, setName } = Store;
-  const { signIn, loaded: signedIn } = useGoogleLogin({
-    onSuccess: (res) => {
+  const { hasLoggedIn, name, setHasLoggedIn, setName } = useStore();
+  console.log({ name, hasLoggedIn });
+  const onSuccess = useCallback(
+    (res) => {
       setName(res.profileObj.name);
+      setHasLoggedIn(true);
+      debugger;
     },
+    [setName, setHasLoggedIn]
+  );
+  const { signIn, loaded } = useGoogleLogin({
+    onSuccess,
     onFailure: (res) => {
       console.warn(res);
     },
@@ -35,12 +41,12 @@ const HomeView = () => {
       "1046915334052-fg0ah1qglsbu2ef240e4ddiiftv70nrq.apps.googleusercontent.com",
   });
   const lobbyPlayerIsIn = useMemo(() => {
-    if (!lobbyData || !signedIn) return false;
+    if (!lobbyData || !hasLoggedIn) return false;
     const { lobbies } = lobbyData;
     return lobbies.find((lobby) =>
       lobby.players.map((player) => player.name).includes(name)
     );
-  }, [lobbyData, name, signedIn]);
+  }, [lobbyData, name, hasLoggedIn]);
 
   const gamePlayerIsIn = useMemo(
     () =>
@@ -61,6 +67,7 @@ const HomeView = () => {
     Router.go(`/lobby/${lobby.id}`);
   }, [name]);
 
+  if (!loaded) return html`<be-loading .color=${"#000"}></be-loading>`;
   return html`<style>
       .container {
         display: flex;
@@ -103,9 +110,12 @@ const HomeView = () => {
         align-items: center;
         gap: 6px;
       }
+      .loginText {
+        font-size: 1rem;
+      }
     </style>
     <div class="container">
-      ${signedIn
+      ${hasLoggedIn
         ? html`<div class="name-container">
               <p>Name: ${name}</p>
             </div>
@@ -119,7 +129,9 @@ const HomeView = () => {
                 Create a Lobby
               </p>
             </be-button>`
-        : html`<be-button .onclick=${signIn}>Login</be-button>`}
+        : html`<be-button .onclick=${signIn}
+            ><span class="loginText">Login</span></be-button
+          >`}
     </div>`;
 };
 

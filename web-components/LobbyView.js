@@ -13,14 +13,14 @@ import {
   swapPositionsInLobby,
   startGame,
 } from "../api.js";
-import { Store } from "../store.js";
+import { useStore } from "../hooks/useStore.js";
 
 const LobbyView = () => {
   const lobbyId = location.pathname.split("/lobby/")[1];
   const { data: lobbyData, hasError, isLoading, forceAcquire } = useLobby(
     lobbyId
   );
-  const { name } = Store;
+  const { name } = useStore();
   const isLeader = useMemo(
     () => lobbyData && lobbyData.lobby && lobbyData.lobby.lobbyLeader === name,
     [lobbyData, name]

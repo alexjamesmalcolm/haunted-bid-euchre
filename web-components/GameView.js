@@ -6,7 +6,7 @@ import {
   useMemo,
 } from "../dependencies/index.js";
 import { useGame } from "../hooks/useGame.js";
-import { Store } from "../store.js";
+import { useStore } from "../hooks/useStore.js";
 
 const getPlayer = (phase, name) =>
   phase.teams[0].players
@@ -17,11 +17,12 @@ const GameView = () => {
   const gameId = location.pathname.split("/game/")[1];
   const [position, setPosition] = useState("");
   const { data: gameData, hasError, isLoading } = useGame(gameId, position);
-  const { name } = Store;
+  const { name } = useStore();
   useEffect(() => {
     if (!isLoading && !hasError && gameData.game) {
+      console.log;
       const player = getPlayer(gameData.game.phase, name);
-      setPosition(player.position);
+      if (player && player.position) setPosition(player.position);
     }
   }, [isLoading, hasError]);
   const options = useMemo(
