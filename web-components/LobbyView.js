@@ -47,6 +47,9 @@ const LobbyView = () => {
       Router.go(`/game/${lobbyData.lobby.game.id}`);
     }
   }, [lobbyData]);
+  useEffect(() => {
+    if (hasError) Router.go("/lobby");
+  }, [hasError]);
   if (isLoading && !lobbyData) return html`<p>Loading...</p>`;
   if (hasError)
     return html`<p>
