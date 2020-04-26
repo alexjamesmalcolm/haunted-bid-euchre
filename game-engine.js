@@ -11,15 +11,15 @@ let System, __instantiateAsync, __instantiate;
             const [e, ...t] = n.split("/").reverse(),
               [, ...r] = i.split("/").reverse(),
               s = [e];
-            let a,
-              o = 0;
-            for (; (a = t.shift()); )
-              if (".." === a) o++;
+            let o,
+              a = 0;
+            for (; (o = t.shift()); )
+              if (".." === o) a++;
               else {
-                if ("." === a) break;
-                s.push(a);
+                if ("." === o) break;
+                s.push(o);
               }
-            o < r.length && s.push(...r.slice(o)), (n = s.reverse().join("/"));
+            a < r.length && s.push(...r.slice(a)), (n = s.reverse().join("/"));
           }
           return e.has(n) ? r(n) : import(t);
         })(i, t),
@@ -35,9 +35,9 @@ let System, __instantiateAsync, __instantiate;
   }
   function n(n) {
     for (const [r, s] of e.entries()) {
-      const { f: e, exp: a } = s,
-        { execute: o, setters: c } = e(i(a), t(r, r === n));
-      delete s.f, (s.e = o), (s.s = c);
+      const { f: e, exp: o } = s,
+        { execute: a, setters: c } = e(i(o), t(r, r === n));
+      delete s.f, (s.e = a), (s.s = c);
     }
   }
   async function r(t) {
@@ -76,11 +76,6 @@ let System, __instantiateAsync, __instantiate;
       })(t)
     ));
 })(),
-  System.register("FixedLengthArray", [], function (e, t) {
-    "use strict";
-    t && t.id;
-    return { setters: [], execute: function () {} };
-  }),
   System.register("definitions", [], function (e, t) {
     "use strict";
     t && t.id;
@@ -108,7 +103,7 @@ let System, __instantiateAsync, __instantiate;
   }),
   System.register("utils", ["shuffle"], function (e, t) {
     "use strict";
-    var i, n, r, s, a, o, c, u, d, g, l;
+    var i, n, r, s, o, a, c, u, d, p, g;
     t && t.id;
     return {
       setters: [
@@ -140,7 +135,7 @@ let System, __instantiateAsync, __instantiate;
           e("getHigherBids", (e) =>
             n.filter((t) => "Pass" === t || (e !== t && s(t, e)))
           ),
-          (a = (e) =>
+          (o = (e) =>
             "Clubs" === e
               ? "Spades"
               : "Spades" === e
@@ -148,16 +143,16 @@ let System, __instantiateAsync, __instantiate;
               : "Diamonds" === e
               ? "Hearts"
               : "Diamonds"),
-          e("cardsContainCard", (o = (e, t) => e.some((e) => u(t, e)))),
+          e("cardsContainCard", (a = (e, t) => e.some((e) => u(t, e)))),
           e("getAllCardsOrderedByHierarchyDesc", (e, t) => {
             if ("Low" === t || "High" === t) {
               const i = c(e, t),
-                n = g().filter((e) => !o(i, e));
+                n = p().filter((e) => !a(i, e));
               return i.concat(n);
             }
             const i = c(t, t),
               n = c(e, t),
-              r = g().filter((e) => !o(i, e) && !o(n, e));
+              r = p().filter((e) => !a(i, e) && !a(n, e));
             return i.concat(n).concat(r);
           }),
           e(
@@ -175,7 +170,7 @@ let System, __instantiateAsync, __instantiate;
                 return "Low" === t ? i : i.reverse();
               }
               {
-                const i = a(t);
+                const i = o(t);
                 if (e === t) {
                   return [
                     { rank: "Jack", suit: e },
@@ -219,7 +214,7 @@ let System, __instantiateAsync, __instantiate;
           e("randomPlayerPosition", () => {
             return ["1", "2", "3", "4"][d(0, 3)];
           }),
-          (g = () => [
+          (p = () => [
             { rank: "9", suit: "Clubs" },
             { rank: "10", suit: "Clubs" },
             { rank: "Jack", suit: "Clubs" },
@@ -246,7 +241,7 @@ let System, __instantiateAsync, __instantiate;
             { rank: "Ace", suit: "Spades" },
           ]),
           e("shuffleAndDealFourHands", () => {
-            const e = i.default(g());
+            const e = i.default(p());
             return [
               [e[0], e[1], e[2], e[3], e[4], e[5]],
               [e[6], e[7], e[8], e[9], e[10], e[11]],
@@ -254,8 +249,8 @@ let System, __instantiateAsync, __instantiate;
               [e[18], e[19], e[20], e[21], e[22], e[23]],
             ];
           }),
-          (l = (e) => ("1" === e ? 0 : "2" === e ? 1 : "3" === e ? 2 : 3)),
-          e("getHandSliceViaPosition", (e, t) => t[l(e)]),
+          (g = (e) => ("1" === e ? 0 : "2" === e ? 1 : "3" === e ? 2 : 3)),
+          e("getHandSliceViaPosition", (e, t) => t[g(e)]),
           e("getPlayerByPosition", (e, t) => {
             const i = t.teams[0].players
               .concat(t.teams[1].players)
@@ -286,9 +281,9 @@ let System, __instantiateAsync, __instantiate;
             })),
             e("chooseOptionForBiddingPhase", (e, t, r) => {
               const s = { choice: e, playerPosition: r },
-                a = t.bids.concat([s]);
+                o = t.bids.concat([s]);
               if (r === t.dealer) {
-                const e = n(a);
+                const e = n(o);
                 return {
                   name: "Picking Trump",
                   dealer: t.dealer,
@@ -299,7 +294,7 @@ let System, __instantiateAsync, __instantiate;
               return {
                 name: "Bidding",
                 bidPosition: i.getNextPosition(t.bidPosition),
-                bids: a,
+                bids: o,
                 dealer: t.dealer,
                 teams: t.teams,
               };
@@ -337,7 +332,7 @@ let System, __instantiateAsync, __instantiate;
               };
             }
             {
-              const a = {
+              const o = {
                 name: "Trick-Taking",
                 dealer: n,
                 trump: e,
@@ -349,8 +344,8 @@ let System, __instantiateAsync, __instantiate;
               };
               return (
                 "Going Alone" === t.winningBid.choice &&
-                  (a.playerSittingOut = r),
-                a
+                  (o.playerSittingOut = r),
+                o
               );
             }
           });
@@ -375,8 +370,8 @@ let System, __instantiateAsync, __instantiate;
           e("chooseOptionForPickingPartnersBestCardPhase", (e, t, n) => {
             const r = t.partner,
               s = i.getPositionOfPartner(r),
-              a = 5 === i.getPlayerByPosition(s, t).hand.length,
-              o = (t) => ({
+              o = 5 === i.getPlayerByPosition(s, t).hand.length,
+              a = (t) => ({
                 ...t,
                 hand:
                   t.position === n
@@ -385,11 +380,11 @@ let System, __instantiateAsync, __instantiate;
               }),
               c = (e) => {
                 if (e.players.some((e) => e.position === t.partner)) {
-                  return { ...e, players: [o(e.players[0]), o(e.players[1])] };
+                  return { ...e, players: [a(e.players[0]), a(e.players[1])] };
                 }
                 return e;
               };
-            return a
+            return o
               ? {
                   name: "Trick-Taking",
                   playerSittingOut: t.partner,
@@ -412,7 +407,7 @@ let System, __instantiateAsync, __instantiate;
     ["utils"],
     function (e, t) {
       "use strict";
-      var i, n, r, s, a, o, c;
+      var i, n, r, s, o, a, c;
       t && t.id;
       return {
         setters: [
@@ -425,29 +420,32 @@ let System, __instantiateAsync, __instantiate;
             i
               .getAllCardsOrderedByHierarchyDesc(e, t)
               .filter((e) => i.cardsContainCard(n, e))[0]),
-            (r = (e, t) => {
-              const r = n(
-                e[0].card.suit,
-                t,
-                e.map((e) => e.card)
-              );
-              return e.filter((e) => i.isSameCard(e.card, r))[0].owner;
-            }),
+            e(
+              "getPositionOfWinnerOfTrick",
+              (r = (e, t) => {
+                const r = n(
+                  e[0].card.suit,
+                  t,
+                  e.map((e) => e.card)
+                );
+                return e.filter((e) => i.isSameCard(e.card, r))[0].owner;
+              })
+            ),
             (s = (e) => ("3" === e ? 3 : "4" === e ? 4 : "5" === e ? 5 : 6)),
-            (a = (e) =>
+            (o = (e) =>
               "Partner's Best Card" === e
                 ? 12
                 : "Going Alone" === e
                 ? 24
                 : s(e)),
-            (o = (e, t) => {
+            (a = (e, t) => {
               const i = s(e),
-                n = a(e);
+                n = o(e);
               return t < i ? -1 * n : Math.max(t, n);
             }),
             (c = (e, t, n) => {
               const s = i.shuffleAndDealFourHands(),
-                a = (e) => ({
+                o = (e) => ({
                   ...e,
                   hand: [...i.getHandSliceViaPosition(e.position, s)],
                 }),
@@ -463,11 +461,11 @@ let System, __instantiateAsync, __instantiate;
                     n = e.players.some(
                       (e) => e.position === t.winningBid.playerPosition
                     )
-                      ? o(t.winningBid.choice, i)
+                      ? a(t.winningBid.choice, i)
                       : i;
                   return {
                     points: e.points + n,
-                    players: [a(e.players[0]), a(e.players[1])],
+                    players: [o(e.players[0]), o(e.players[1])],
                   };
                 };
               return {
@@ -481,16 +479,16 @@ let System, __instantiateAsync, __instantiate;
             e("chooseOptionForTrickTakingPhase", (e, t, n) => {
               const {
                   currentTrick: s,
-                  finishedTricks: a,
-                  dealer: o,
+                  finishedTricks: o,
+                  dealer: a,
                   trump: u,
                   winningBid: d,
-                  playerSittingOut: g,
-                  teams: l,
-                  cardPosition: p,
+                  playerSittingOut: p,
+                  teams: g,
+                  cardPosition: l,
                 } = t,
-                h = 5 === a.length,
-                f = 3 === s.length || (!!g && 2 === s.length);
+                h = 5 === o.length,
+                f = 3 === s.length || (!!p && 2 === s.length);
               if (h && f) return c(e, t, n);
               const m = (t) => ({
                   name: t.name,
@@ -507,27 +505,27 @@ let System, __instantiateAsync, __instantiate;
                   name: "Trick-Taking",
                   cardPosition: r(t, u),
                   currentTrick: [],
-                  dealer: o,
-                  finishedTricks: [...a, t],
+                  dealer: a,
+                  finishedTricks: [...o, t],
                   trump: u,
                   winningBid: d,
-                  playerSittingOut: g,
-                  teams: [k(l[0]), k(l[1])],
+                  playerSittingOut: p,
+                  teams: [k(g[0]), k(g[1])],
                 };
               }
               return {
                 name: "Trick-Taking",
                 cardPosition:
-                  g && i.getNextPosition(p) === g
-                    ? i.getNextPosition(i.getNextPosition(p))
-                    : i.getNextPosition(p),
+                  p && i.getNextPosition(l) === p
+                    ? i.getNextPosition(i.getNextPosition(l))
+                    : i.getNextPosition(l),
                 currentTrick: [...s, { owner: n, card: e }],
-                dealer: o,
-                finishedTricks: a,
+                dealer: a,
+                finishedTricks: o,
                 trump: u,
                 winningBid: d,
-                playerSittingOut: g,
-                teams: [k(l[0]), k(l[1])],
+                playerSittingOut: p,
+                teams: [k(g[0]), k(g[1])],
               };
             });
         },
@@ -565,9 +563,9 @@ let System, __instantiateAsync, __instantiate;
                 .reduce((e, t) => i.getHigherBid(e, t)),
               r = t === e.dealer,
               s = e.bids.every((e) => "Pass" === e.choice),
-              a = r && s,
-              o = i.getHigherBids(n);
-            return a ? o.filter((e) => "Pass" !== e) : o;
+              o = r && s,
+              a = i.getHigherBids(n);
+            return o ? a.filter((e) => "Pass" !== e) : a;
           });
         },
       };
@@ -676,7 +674,7 @@ let System, __instantiateAsync, __instantiate;
     ],
     function (e, t) {
       "use strict";
-      var i, n, r, s, a, o, c, u, d, g, l, p, h, f, m;
+      var i, n, r, s, o, a, c, u, d, p, g, l, h, f, m;
       t && t.id;
       return {
         setters: [
@@ -693,10 +691,10 @@ let System, __instantiateAsync, __instantiate;
             s = e;
           },
           function (e) {
-            a = e;
+            o = e;
           },
           function (e) {
-            o = e;
+            a = e;
           },
           function (e) {
             c = e;
@@ -709,11 +707,11 @@ let System, __instantiateAsync, __instantiate;
           },
         ],
         execute: function () {
-          (g = (e) => {
+          (p = (e) => {
             const t = e;
             return void 0 !== t.rank && void 0 !== t.suit;
           }),
-            (l = (e) =>
+            (g = (e) =>
               [
                 "Pass",
                 "3",
@@ -723,7 +721,7 @@ let System, __instantiateAsync, __instantiate;
                 "Partner's Best Card",
                 "Going Alone",
               ].includes(e)),
-            (p = (e) =>
+            (l = (e) =>
               ["Clubs", "Diamonds", "Hearts", "High", "Low", "Spades"].includes(
                 e
               )),
@@ -812,9 +810,9 @@ let System, __instantiateAsync, __instantiate;
               (f = (e, t) =>
                 h(e)[0]
                   ? "Bidding" === e.name
-                    ? a.getOptionsForBiddingPhase(e, t)
+                    ? o.getOptionsForBiddingPhase(e, t)
                     : "Picking Trump" === e.name
-                    ? o.getOptionsForTrumpPickingPhase(e, t)
+                    ? a.getOptionsForTrumpPickingPhase(e, t)
                     : "Trick-Taking" === e.name
                     ? c.getOptionsForTrickTakingPhase(e, t)
                     : "Picking Partner's Best Card" === e.name
@@ -827,27 +825,27 @@ let System, __instantiateAsync, __instantiate;
               (m = (e, t, i) =>
                 f(t, i).some((t) => JSON.stringify(t) === JSON.stringify(e)))
             ),
-            e("chooseOption", (e, t, a) => {
-              if (!m(e, t, a) || !h(t)) {
-                if (m(e, t, a)) {
+            e("chooseOption", (e, t, o) => {
+              if (!m(e, t, o) || !h(t)) {
+                if (m(e, t, o)) {
                   const [, e] = h(t);
                   console.warn(e);
                 } else console.warn("Option is illegal");
                 return t;
               }
-              const o = (() =>
-                "Bidding" === t.name && l(e)
-                  ? i.chooseOptionForBiddingPhase(e, t, a)
-                  : "Picking Trump" === t.name && p(e)
+              const a = (() =>
+                "Bidding" === t.name && g(e)
+                  ? i.chooseOptionForBiddingPhase(e, t, o)
+                  : "Picking Trump" === t.name && l(e)
                   ? n.chooseOptionForPickingTrumpPhase(e, t)
-                  : "Picking Partner's Best Card" === t.name && g(e)
-                  ? r.chooseOptionForPickingPartnersBestCardPhase(e, t, a)
-                  : "Trick-Taking" === t.name && g(e)
-                  ? s.chooseOptionForTrickTakingPhase(e, t, a)
+                  : "Picking Partner's Best Card" === t.name && p(e)
+                  ? r.chooseOptionForPickingPartnersBestCardPhase(e, t, o)
+                  : "Trick-Taking" === t.name && p(e)
+                  ? s.chooseOptionForTrickTakingPhase(e, t, o)
                   : t)();
-              if ("Game Over" === o.name) return o;
-              const [c, u] = h(o);
-              return c ? o : (console.warn(u), t);
+              if ("Game Over" === a.name) return a;
+              const [c, u] = h(a);
+              return c ? a : (console.warn(u), t);
             }),
             e("startGame", (e) => {
               const t = d.randomPlayerPosition(),
@@ -867,16 +865,46 @@ let System, __instantiateAsync, __instantiate;
                     { points: 0, players: [r("2"), r("4")] },
                   ],
                 },
-                a = h(s);
-              return a[0] ? s : a;
+                o = h(s);
+              return o[0] ? s : o;
             });
         },
       };
     }
+  ),
+  System.register(
+    "mod",
+    ["index", "choose_option_utils/choose_for_trick_taking_phase"],
+    function (e, t) {
+      "use strict";
+      t && t.id;
+      return {
+        setters: [
+          function (t) {
+            e({
+              chooseOption: t.chooseOption,
+              determineIfPhaseIsLegal: t.determineIfPhaseIsLegal,
+              getOptions: t.getOptions,
+              isLegalOption: t.isLegalOption,
+              startGame: t.startGame,
+            });
+          },
+          function (t) {
+            e({ getPositionOfWinnerOfTrick: t.getPositionOfWinnerOfTrick });
+          },
+        ],
+        execute: function () {},
+      };
+    }
   );
-const __exp = __instantiate("index");
+const __exp = __instantiate("mod");
+export const chooseOption = __exp.chooseOption;
 export const determineIfPhaseIsLegal = __exp.determineIfPhaseIsLegal;
 export const getOptions = __exp.getOptions;
 export const isLegalOption = __exp.isLegalOption;
-export const chooseOption = __exp.chooseOption;
 export const startGame = __exp.startGame;
+export const Phase = __exp.Phase;
+export const Option = __exp.Option;
+export const PlayerPosition = __exp.PlayerPosition;
+export const LobbyPlayer = __exp.LobbyPlayer;
+export const getPositionOfWinnerOfTrick = __exp.getPositionOfWinnerOfTrick;
