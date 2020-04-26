@@ -23,7 +23,6 @@ const HomeView = () => {
     isLoading: isLoadingGame,
   } = useTypicalRequest(getAllGames);
   const { hasLoggedIn, name, setHasLoggedIn, setName } = useStore();
-  console.log({ name, hasLoggedIn });
   const onSuccess = useCallback(
     (res) => {
       setName(res.profileObj.name);

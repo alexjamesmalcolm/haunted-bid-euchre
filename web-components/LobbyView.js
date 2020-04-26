@@ -55,7 +55,6 @@ const LobbyView = () => {
     return html`<p>
       There was an issue loading the lobby. Please complain to Alex.
     </p>`;
-  console.log(lobbyData);
   const { players, lobbyLeader } = lobbyData.lobby;
   const you = players.find((player) => player.name === name);
   return html`<style>
