@@ -5,8 +5,7 @@ const Player = ({
   hand,
   onOptionSelection: handleOptionSelection,
   tricksTaken = "",
-}) => {
-  return html`<style>
+}) => html`<style>
       .options {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -90,6 +89,5 @@ const Player = ({
         : null
     }
     </div>`;
-};
 
 customElements.define("be-player", component(Player));

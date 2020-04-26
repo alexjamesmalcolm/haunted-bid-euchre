@@ -77,11 +77,12 @@ const GameView = () => {
       if (player && player.position) setPosition(player.position);
     }
   }, [isLoading, hasError]);
-  const options = useMemo(
-    () =>
-      gameData && gameData.phase ? getOptions(gameData.phase, position) : [],
-    [gameData, position]
-  );
+  const options = useMemo(() => {
+    if (gameData && gameData.game) {
+      return getOptions(gameData.game.phase, position);
+    }
+    return [];
+  }, [gameData, position]);
   const handleOptionSelection = useCallback(
     async (option) => {
       await chooseOption({ gameId, option, position });
