@@ -9,7 +9,7 @@ import {
 import { useGame } from "../hooks/useGame.js";
 import { useStore } from "../hooks/useStore.js";
 import { chooseOption } from "../api.js";
-import { getPositionOfWinnerOfTrick } from "../game-engine.js";
+import { getPositionOfWinnerOfTrick, getOptions } from "../game-engine.js";
 
 const getPlayers = (phase) =>
   phase.teams[0].players.concat(phase.teams[1].players);
@@ -78,8 +78,9 @@ const GameView = () => {
     }
   }, [isLoading, hasError]);
   const options = useMemo(
-    () => (gameData && gameData.options ? gameData.options : []),
-    [gameData]
+    () =>
+      gameData && gameData.phase ? getOptions(gameData.phase, position) : [],
+    [gameData, position]
   );
   const handleOptionSelection = useCallback(
     async (option) => {
@@ -156,7 +157,6 @@ const GameView = () => {
   const ourTeam = getTeamByMemberPosition(phase, teammatePosition);
   const theirTeam = getTeamByMemberPosition(phase, leftPosition);
 
-  console.log(phase);
   return html`<style>
       .container {
         display: grid;
