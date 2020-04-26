@@ -12,6 +12,8 @@ import "./Button.js";
 import "./LobbyView.js";
 import "./GameView.js";
 import "./DebugApp.js";
+import "./DebugPlayer.js";
+import "./OtherPlayer.js";
 
 import { Router } from "../dependencies/index.js";
 

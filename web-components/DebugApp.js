@@ -31,7 +31,8 @@ const DebugApp = () => {
     await chooseOption({ gameId: gameData.game.id, option, position });
     forceAcquire();
   };
-  if (isLoading) {
+  if (isLoading && !gameData) {
+    debugger;
     return html`<be-loading .color=${"#000"} .message=${"Making move..."} />`;
   }
   const { phase } = gameData.game;
@@ -66,12 +67,12 @@ const DebugApp = () => {
     <div class="players">
       ${players.map(
         (player) =>
-          html`<be-player
+          html`<debug-player
             .options=${getOptions(phase, player.position)}
             .name=${player.name}
             .hand=${player.hand}
             .onOptionSelection=${handleOptionSelection(player.position)}
-          ></be-player>`
+          ></debug-player>`
       )}
     </div>`;
 };

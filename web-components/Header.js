@@ -7,7 +7,7 @@ const Header = () => html`<style>
       align-items: center;
     }
     .header * {
-      margin: 1rem 0;
+      margin: 0.4rem 0;
     }
   </style>
   <header class="header">

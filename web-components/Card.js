@@ -5,7 +5,7 @@ const Card = ({ rank, suit, isFacingUp = true }) => {
   const getShortSuit = () => suit.slice(0, 1);
   return html`<style>
       .card {
-        width: 5.5rem;
+        width: 3.5rem;
       }
     </style>
     ${isFacingUp
@@ -21,4 +21,4 @@ const Card = ({ rank, suit, isFacingUp = true }) => {
         />`}`;
 };
 
-customElements.define("be-card", component(Card));
+customElements.define("be-card", component(Card, { useShadowDOM: false }));
