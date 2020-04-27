@@ -164,7 +164,7 @@ const GameView = () => {
         justify-content: center;
         grid-template-rows: auto auto ${phase.name === "Bidding"
             ? "5rem"
-            : "10rem"};
+            : "10.8rem"};
       }
       .other-players {
         display: grid;

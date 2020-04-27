@@ -38,7 +38,7 @@ const OtherPlayer = ({
         width: 33.3333vw;
         text-overflow: ellipsis;
         overflow: hidden;
-        height: max-content;
+        height: 44px;
         display: flex;
         justify-content: center;
         align-items: flex-end;
