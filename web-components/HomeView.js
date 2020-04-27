@@ -12,6 +12,9 @@ import { useGoogleLogin } from "../hooks/googleLogin/useGoogleLogin.js";
 import { useGoogleLogout } from "../hooks/googleLogin/useGoogleLogout.js";
 import { useStore } from "../hooks/useStore.js";
 
+const clientId =
+  "1046915334052-fg0ah1qglsbu2ef240e4ddiiftv70nrq.apps.googleusercontent.com";
+
 const HomeView = () => {
   const {
     data: lobbyData,
@@ -37,10 +40,9 @@ const HomeView = () => {
     onFailure: (res) => {
       console.warn(res);
     },
-    clientId:
-      "1046915334052-fg0ah1qglsbu2ef240e4ddiiftv70nrq.apps.googleusercontent.com",
+    clientId,
   });
-  const { signOut } = useGoogleLogout({});
+  const { signOut } = useGoogleLogout({ clientId });
   const lobbyPlayerIsIn = useMemo(() => {
     if (!lobbyData || !hasLoggedIn) return false;
     const { lobbies } = lobbyData;
