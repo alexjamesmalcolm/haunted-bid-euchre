@@ -9,6 +9,7 @@ import {
 import { startLobby, getAllLobbies, getAllGames } from "../api.js";
 import { useTypicalRequest } from "../hooks/useTypicalRequest.js";
 import { useGoogleLogin } from "../hooks/googleLogin/useGoogleLogin.js";
+import { useGoogleLogout } from "../hooks/googleLogin/useGoogleLogout.js";
 import { useStore } from "../hooks/useStore.js";
 
 const HomeView = () => {
@@ -39,6 +40,7 @@ const HomeView = () => {
     clientId:
       "1046915334052-fg0ah1qglsbu2ef240e4ddiiftv70nrq.apps.googleusercontent.com",
   });
+  const { signOut } = useGoogleLogout({});
   const lobbyPlayerIsIn = useMemo(() => {
     if (!lobbyData || !hasLoggedIn) return false;
     const { lobbies } = lobbyData;
@@ -117,6 +119,9 @@ const HomeView = () => {
       ${hasLoggedIn
         ? html`<div class="name-container">
               <p>Name: ${name}</p>
+              <be-button .onclick=${signOut} .color=${"secondary"}>
+                <span class="loginText">Logout</span>
+              </be-button>
             </div>
             <be-button class="button">
               <a class="button-content" href="/lobby">
