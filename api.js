@@ -47,8 +47,9 @@ export const joinLobby = async ({ lobbyId, name }) => {
   const { lobby } = await getLobby(lobbyId);
   const { players } = lobby;
   const playerPositions = ["1", "2", "3", "4"];
-  const [nextAvailablePosition] = playerPositions.filter((playerPosition) =>
-    players.map((player) => player.position === playerPosition)
+  const [nextAvailablePosition] = playerPositions.filter(
+    (playerPosition) =>
+      !players.some((player) => player.position === playerPosition)
   );
   return updatePlayersInLobby(
     lobbyId,
