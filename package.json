@@ -1,0 +1,22 @@
+{
+  "name": "haunted-bid-euchre-ui",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "serve -s ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexjamesmalcolm/haunted-bid-euchre-ui.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexjamesmalcolm/haunted-bid-euchre-ui/issues"
+  },
+  "homepage": "https://github.com/alexjamesmalcolm/haunted-bid-euchre-ui#readme",
+  "devDependencies": {
+    "serve": "^11.3.0"
+  }
+}
